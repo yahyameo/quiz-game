@@ -1,0 +1,60 @@
+<ion-content>
+
+  <div style="text-align: center;" padding [@flyInBottomFast]="cloudState" id="cloud-layer">
+    <form [formGroup]="formGroup" (submit)="signup()">
+      <div *ngIf="formGroup.errors" class="alert alert-danger">
+        Your request can not be submitted because of invalid data.
+      </div>
+      <ion-row>
+        <ion-col>
+          <img *ngIf="myPhotoURL" style="width: 136px;border-radius: 85px;height: 141px;" [@flyInBottomSlow]="logoState" src="{{myPhotoURL}}" />
+           <img *ngIf="!myPhotoURL" style="width: 136px;border-radius: 85px;height: 141px;" [@flyInBottomSlow]="logoState" src="assets/icon/user.png" />
+          <div (click)="changePicture()" style="margin-bottom:-7px;" class="topright"><span> <ion-icon name="camera"></ion-icon></span></div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list inset [@bounceInBottom]="formState">
+            <ion-item>
+              <ion-label>First name</ion-label>
+              <ion-input formControlName="firstName"  type="text"></ion-input>
+              <div *ngIf="firstName.touched && firstName.invalid">
+                First Name is required
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label>Last name</ion-label>
+              <ion-input formControlName="lastName" type="text"></ion-input>
+              <div *ngIf="lastName.touched && lastName.invalid" class="alert alert-danger">
+                Last Name is required
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label>Email</ion-label>
+              <ion-input formControlName="email" type="email"></ion-input>
+              <div *ngIf="email.touched && email.invalid" class="alert alert-danger">
+                email is required
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label>Password</ion-label>
+              <ion-input formControlName="password" type="password"></ion-input>
+              <div *ngIf="password.touched && password.invalid" class="alert alert-danger">
+                Password is required
+              </div>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <button type="submit" ion-button class="login-button" [@fadeIn]="loginState">Sign up</button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+
+</ion-content>

@@ -1,0 +1,93 @@
+.ios, .md {
+ 
+  page-sign-up {
+ 
+    .scroll-content {
+      background-color: #F44336;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+ 
+    img {
+      width: 50%;
+      height: auto;
+      margin: 0 auto;
+    }
+ 
+    #cloud-layer {
+      background-image: url(../assets/images/cloud-layer.png);
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+    }
+ 
+      ion-row {
+        align-items: center;
+        text-align: center;
+      }
+ 
+      ion-item {
+          border-radius: 30px !important;
+          padding-left: 10px !important;
+          margin-bottom: 10px;
+          background-color: #f6f6f6;
+          opacity: 0.7;
+          font-size: 0.9em;
+      }
+ 
+      ion-list {
+          margin: 0;
+      }
+ 
+      .login-button {
+          width: 100%;
+          border-radius: 30px;
+          font-size: 0.9em;
+          border: 1px solid #fff;
+          background-color: #39acdc;
+      }
+ 
+  }
+ 
+}
+.topright {
+    position: absolute;
+    bottom: 25px;
+    right: 50px;
+    font-size: 18px;
+    margin-right: 38px;
+    font-size: 30px;
+}
+.bar-profile {
+    background-color: #C62828;
+    height: 170px;
+}
+
+.profile {
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-top: 15px;
+}
+
+.name {
+    color: #FFFFFF;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.profile-picture {
+    border-radius: 50%;
+}
+.avatar{
+    width: 136px;
+    border-radius: 85px;
+    height: 141px;
+}

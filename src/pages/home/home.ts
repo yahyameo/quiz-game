@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { QuestionsPage } from "../questions/questions";
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -10,6 +11,6 @@ export class HomePage {
 
   }
 goToLogin(){
-  this.navCtrl.push('LoginPage');
+  this.navCtrl.push(QuestionsPage);
 }
 }

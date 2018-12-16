@@ -4,6 +4,7 @@ import { CommonService } from "../../providers/common-service/common-service";
 import { AuthService } from "../../providers/auth/auth";
 import { SignUpPage } from "../sign-up/sign-up";
 import { HomePage } from "../home/home";
+import { SelectGamePage } from "../select-game/select-game";
  
 @IonicPage()
 @Component({
@@ -24,17 +25,30 @@ export class LoginPage {
  }
   public login() {
     this.showLoading();
-    this.authService.login(this.registerCredentials.email, this.registerCredentials.password).then(value => {
+    this.authService.login(this.registerCredentials.email, this.registerCredentials.password)
+  //  .subscribe(
+  //           data => {
+  //             this.loading.dismiss();
+  //               console.log("POST Request is successful ", data);
+  //               localStorage.setItem('user', JSON.stringify(data));
+  //               this.navCtrl.push(HomePage);
+  //           },
+  //           error => {
+  //               console.log("Error", error);
+  //                this.loading.dismiss();
+  //           }
+  //       ); 
+    .then(value => {
       if(value){
       localStorage.setItem('user', JSON.stringify(value));
-      this.navCtrl.push(HomePage);
+      this.navCtrl.push(SelectGamePage);
       }
       else {
-        this.showError("Access Denied");
+      //  this.showError("Access Denied");
       }
       },
       error => {
-        this.showError(error);
+    //    this.showError(error);
       }); 
     
   }
@@ -47,14 +61,4 @@ export class LoginPage {
     this.loading.present();
   }
  
-  showError(text) {
-    this.loading.dismiss();
- 
-    let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
-      buttons: ['OK']
-    });
-    alert.present(prompt);
-  }
 }

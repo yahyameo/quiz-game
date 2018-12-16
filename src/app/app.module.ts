@@ -21,12 +21,26 @@ import { CommonService } from "../providers/common-service/common-service";
 import { HttpClientModule } from "@angular/common/http";
 import { SignUpPage } from "../pages/sign-up/sign-up";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SelectGamePage } from "../pages/select-game/select-game";
+import { LoginPage } from "../pages/login/login";
+import { QuestionsPage } from "../pages/questions/questions";
+import { FlashCardComponent } from "../components/flash-card/flash-card";
+import {  RoundProgressModule
+} from 'angular-svg-round-progressbar';
+import { CongratulationPage } from "../pages/congratulation/congratulation";
+import { RedeemPage } from "../pages/redeem/redeem";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    SignUpPage
+    SignUpPage,
+    LoginPage,
+    SelectGamePage,
+    QuestionsPage,
+    CongratulationPage,
+    RedeemPage,
+    FlashCardComponent
   ],
   imports: [
     BrowserModule,
@@ -38,12 +52,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFireStorageModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    RoundProgressModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    SignUpPage
+    SignUpPage,
+    LoginPage,
+    SelectGamePage,
+    QuestionsPage,
+    CongratulationPage,
+    RedeemPage
   ],
   providers: [
     StatusBar,
@@ -56,6 +76,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonService,
     PictureUtils,
      Camera,
+
   ]
 })
 export class AppModule {}

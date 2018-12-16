@@ -1,0 +1,35 @@
+.page-questions {
+   background-image: url("../../assets/icon/background.jpg");
+   .question{
+    background-image: url("../../assets/icon/question.png"); 
+    background-size: 274px;
+    background-repeat: no-repeat;
+    min-height: 80px;
+    width: 100%;
+    margin: 10px;  
+    padding-top: 10px;
+   }
+   .question-opt{
+    background-image: url("../../assets/icon/ans.png"); 
+    background-size: 274px;
+    background-repeat: no-repeat;  
+    height: 40px;
+    padding: 10px; 
+   }
+   .progress-percentage-wrapper {
+    position: relative;
+    margin: 20px auto;
+    font-size: 20px;
+    width: 200px;
+  //  height: 200px;
+    text-align: -webkit-center;
+}
+.progress-percentage {
+    position: absolute;
+    color: red;
+    width: 100%;
+    text-align: center !important;
+    top: 35%;
+//right:10% 
+}
+}

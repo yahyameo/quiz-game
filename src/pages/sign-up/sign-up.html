@@ -1,60 +1,57 @@
-<ion-content>
 
-  <div style="text-align: center;" padding [@flyInBottomFast]="cloudState" id="cloud-layer">
-    <form [formGroup]="formGroup" (submit)="signup()">
-      <div *ngIf="formGroup.errors" class="alert alert-danger">
-        Your request can not be submitted because of invalid data.
+<ion-content class="login-content" padding>
+  <div style="border-radius: 13px;" class="login-box">
+      <div>
+      <table style="width:100%">
+        <tr>
+       <td> <button (click)="goToLogin();" ion-button class="submit-btn" full>Login</button></td>
+      <td style="width: 10px;"></td>
+       <td> <button  ion-button class="submit-btn" full>Register</button></td>
+        </tr></table>
       </div>
+    <form [formGroup]="formGroup" (submit)="signup()">
       <ion-row>
         <ion-col>
-          <img *ngIf="myPhotoURL" style="width: 136px;border-radius: 85px;height: 141px;" [@flyInBottomSlow]="logoState" src="{{myPhotoURL}}" />
-           <img *ngIf="!myPhotoURL" style="width: 136px;border-radius: 85px;height: 141px;" [@flyInBottomSlow]="logoState" src="assets/icon/user.png" />
-          <div (click)="changePicture()" style="margin-bottom:-7px;" class="topright"><span> <ion-icon name="camera"></ion-icon></span></div>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <ion-list inset [@bounceInBottom]="formState">
+          <ion-list inset>
             <ion-item>
-              <ion-label>First name</ion-label>
-              <ion-input formControlName="firstName"  type="text"></ion-input>
+              <ion-input placeholder="First name"  formControlName="firstName"  type="text"></ion-input>
               <div *ngIf="firstName.touched && firstName.invalid">
                 First Name is required
               </div>
             </ion-item>
             <ion-item>
-              <ion-label>Last name</ion-label>
-              <ion-input formControlName="lastName" type="text"></ion-input>
+              <ion-input placeholder="Last name" formControlName="lastName" type="text"></ion-input>
               <div *ngIf="lastName.touched && lastName.invalid" class="alert alert-danger">
                 Last Name is required
               </div>
             </ion-item>
-            <ion-item>
-              <ion-label>Email</ion-label>
-              <ion-input formControlName="email" type="email"></ion-input>
+             <ion-item>
+              <ion-input placeholder="Phone" formControlName="phone" type="text"></ion-input>
+              <div *ngIf="phone.touched && phone.invalid" class="alert alert-danger">
+                Phone is required
+              </div>
+            </ion-item>
+             <ion-item>
+              <ion-input placeholder="Email" formControlName="email" type="email"></ion-input>
               <div *ngIf="email.touched && email.invalid" class="alert alert-danger">
                 email is required
               </div>
             </ion-item>
             <ion-item>
-              <ion-label>Password</ion-label>
-              <ion-input formControlName="password" type="password"></ion-input>
+              <ion-input placeholder="Password" formControlName="password" type="password"></ion-input>
               <div *ngIf="password.touched && password.invalid" class="alert alert-danger">
                 Password is required
               </div>
             </ion-item>
-
           </ion-list>
         </ion-col>
       </ion-row>
-
       <ion-row>
-        <ion-col>
-          <button type="submit" ion-button class="login-button" [@fadeIn]="loginState">Sign up</button>
+        <ion-col class="signup-col">
+         <button type="submit" ion-button class="login-button" [@fadeIn]="loginState">Submit</button>
         </ion-col>
       </ion-row>
+
     </form>
   </div>
-
 </ion-content>

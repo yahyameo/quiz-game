@@ -7,6 +7,8 @@ import { HomePage } from "../home/home";
 import { CommonService } from "../../providers/common-service/common-service";
 import { PictureUtils } from "../../providers/pictureUtils.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { LoginPage } from "../login/login";
+import { SelectGamePage } from "../select-game/select-game";
 
 @Component({
   selector: 'page-sign-up',
@@ -76,8 +78,7 @@ export class SignUpPage {
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     profilePicture: new FormControl(''),
-    location: new FormControl(''),
-    ipAddress:new FormControl(''),
+    phone:new FormControl(''),
   });
   constructor(public navCtrl: NavController,
   public authService: AuthService,public userService:UserService,public loadingCtrl: LoadingController,
@@ -87,6 +88,9 @@ export class SignUpPage {
  this.commonService.getCurrentCountry().subscribe(data=>{
 this.countryData=data;
  });
+  }
+  goToLogin(){
+    this.navCtrl.push(LoginPage);
   }
   signup() {
    if(this.formGroup.invalid){
@@ -107,7 +111,7 @@ this.countryData=data;
       localStorage.setItem('user', JSON.stringify(value));
       this.userService.addUser(this.formGroup.value);
       loading.dismiss();
-      this.navCtrl.push(HomePage);
+      this.navCtrl.push(SelectGamePage);
     });
   }
      changePicture(): void {
@@ -146,6 +150,9 @@ this.countryData=data;
   }
   get email() {
     return this.formGroup.get('email')
+  }
+   get phone() {
+    return this.formGroup.get('phone')
   }
   get password() {
     return this.formGroup.get('password')

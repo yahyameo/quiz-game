@@ -1,0 +1,28 @@
+<ion-content class="page-congratulation" padding>
+<div>
+  <img src="assets/icon/flayers.png">
+</div>
+<div>
+  <div style="float:left;">
+    <img style="width:90px;" src="assets/icon/trophy.png"/>
+  </div>
+  <div style="color:white;float:right;">
+   <h3>Congratulations</h3>
+   <h4>You've got</h4>
+   <h5>$ {{points}}</h5>
+   </div>
+</div>
+<ion-card class="result" >
+  <ion-card-content >
+<label><strong>  Total Questions {{totalQuestions}}</strong> </label><br>
+<label><strong> Right Answer {{rightAnswer}} </strong></label>
+  </ion-card-content>
+
+</ion-card>
+<div>
+  <img (click)="goToRedeem();" src="assets/icon/redeem-now.png"/>
+</div>
+<div style="position:absolute;bottom:0">
+  <img src="assets/icon/flayers.png">
+</div>
+</ion-content>

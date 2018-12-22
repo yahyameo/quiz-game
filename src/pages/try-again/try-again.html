@@ -1,0 +1,45 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <span><ion-icon ios="ios-home" md="md-home"> Home</ion-icon></span>
+    <span style="float:right;"><ion-icon ios="ios-log-out" md="md-log-out"></ion-icon></span>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="login-content" padding>
+  <div *ngIf="!timeout">
+  <h3>Sorry better luck next time</h3>
+  <div style="text-align: center;">
+    <table style="width:100%;">
+      <tr>
+        <td>
+          <img style="width:100px;" src="assets/icon/sorry.gif" />
+        </td>
+      </tr>
+      <tr>
+        <td><strong> Your score:{{((rightAnswer/totalQuestions)*100).toFixed(0)}}% </strong></td>
+      </tr>
+    </table>
+  </div>
+  <p>Dear <strong> {{user.name}}</strong> you did your best, do some more effort to head towards success </p>
+  </div>
+   <div *ngIf="timeout">
+  <h3>Your Timed out</h3>
+  <div style="text-align: center;">
+    <table style="width:100%;">
+      <tr>
+        <td>
+          <img style="width:100px;" src="assets/icon/timeout.gif" />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <p>Dear <strong> {{user.name}}</strong> your time expired please start again to win prizes </p>
+  </div>
+  <div style="text-align: -webkit-center;">
+    <table>
+      <tr>
+        <td style="padding: 10px;"><button (click)="goToSelectGame()" ion-button class="submit-btn" full type="button">Try again</button></td>
+        <td><button (click)="goToSelectGame()" ion-button class="submit-btn" full type="button">Home</button></td>
+      </tr>
+    </table>
+  </div>
+</ion-content>

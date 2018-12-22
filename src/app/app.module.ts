@@ -25,10 +25,18 @@ import { SelectGamePage } from "../pages/select-game/select-game";
 import { LoginPage } from "../pages/login/login";
 import { QuestionsPage } from "../pages/questions/questions";
 import { FlashCardComponent } from "../components/flash-card/flash-card";
-import {  RoundProgressModule
+import {
+  RoundProgressModule
 } from 'angular-svg-round-progressbar';
 import { CongratulationPage } from "../pages/congratulation/congratulation";
 import { RedeemPage } from "../pages/redeem/redeem";
+import { SplashPage } from "../pages/splash/splash";
+import { TryAgainPage } from "../pages/try-again/try-again";
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { ClubsPage } from "../pages/clubs/clubs";
+import { CheckPaymentPage } from "../pages/check-payment/check-payment";
+import { MakePaymentPage } from "../pages/make-payment/make-payment";
+import { ProgressBarComponent } from "../components/progress-bar/progress-bar";
 
 @NgModule({
   declarations: [
@@ -39,8 +47,14 @@ import { RedeemPage } from "../pages/redeem/redeem";
     SelectGamePage,
     QuestionsPage,
     CongratulationPage,
+    TryAgainPage,
     RedeemPage,
-    FlashCardComponent
+    SplashPage,
+    ClubsPage,
+    CheckPaymentPage,
+    MakePaymentPage,
+    FlashCardComponent,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
@@ -63,20 +77,26 @@ import { RedeemPage } from "../pages/redeem/redeem";
     SelectGamePage,
     QuestionsPage,
     CongratulationPage,
-    RedeemPage
+    TryAgainPage,
+    RedeemPage,
+    ClubsPage,
+    CheckPaymentPage,
+    MakePaymentPage,
+    SplashPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-     AuthService,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    AuthService,
     AngularFireAuth,
     UserService,
     CommonProvider,
     CommonService,
     PictureUtils,
-     Camera,
+    Camera,
+    ScreenOrientation,
 
   ]
 })
-export class AppModule {}
+export class AppModule { }

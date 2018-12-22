@@ -14,14 +14,8 @@
         <ion-col>
           <ion-list inset>
             <ion-item>
-              <ion-input placeholder="First name"  formControlName="firstName"  type="text"></ion-input>
-              <div *ngIf="firstName.touched && firstName.invalid">
-                First Name is required
-              </div>
-            </ion-item>
-            <ion-item>
-              <ion-input placeholder="Last name" formControlName="lastName" type="text"></ion-input>
-              <div *ngIf="lastName.touched && lastName.invalid" class="alert alert-danger">
+              <ion-input placeholder="Full name" formControlName="name" type="text"></ion-input>
+              <div *ngIf="name.touched && name.invalid" class="alert alert-danger">
                 Last Name is required
               </div>
             </ion-item>
@@ -48,7 +42,7 @@
       </ion-row>
       <ion-row>
         <ion-col class="signup-col">
-         <button type="submit" ion-button class="login-button" [@fadeIn]="loginState">Submit</button>
+         <button type="submit" ion-button class="submit-btn" [@fadeIn]="loginState">Submit</button>
         </ion-col>
       </ion-row>
 

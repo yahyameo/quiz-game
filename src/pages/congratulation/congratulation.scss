@@ -8,5 +8,16 @@ background-image: url("../../assets/icon/background.jpg");
     padding: 10px;   
     background-color: dodgerblue;
     color: blue;
+    text-align: center;
+}
+.btn-bg{
+    background-image: url("../../assets/icon/redeem-now.png"); 
+    background-size: 146px;
+    background-repeat: no-repeat;  
+    padding: 10px; 
+    width: 53%;
+    border-radius: 27px;
+    background-position: center;
+    padding: 17px;  
 }
 }

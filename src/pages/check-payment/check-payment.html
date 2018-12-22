@@ -1,0 +1,30 @@
+
+<ion-header no-border>
+  <ion-toolbar>
+    <span><ion-icon ios="ios-home" md="md-home"> Home</ion-icon></span>
+    <span style="float:right;"><ion-icon ios="ios-log-out" md="md-log-out"></ion-icon></span>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="content" padding>
+<div class="row">
+                <div class="pays col-xs-12 col-md-12">
+             
+            <h3>Pay Using Coins Money</h3>
+            <p class="pay-details"> Coins :  0 </p>
+           <p class="pay-details"> Amount to Pay :2000 Coins</p>
+            
+           <p class="insf-amt">Your Wallet Money is not sufficient please b y coins or user some other method </p>
+		   <p class="add-more">Pay Using Wallet Coins : 2000, more Coins</p>
+			<p class="add-more"><input type="checkbox" name="payment" value="">Pay Using Wallet Money : 0</p>
+			            
+			
+			<p class="coins-add-text tst"> You need to add amount for 2000 Coins : <span class="red"> 600</span> Enter Amount and process</p>
+			            
+         </div>
+         <div>
+           <button (click)="goToMakePayment();" ion-button class="btn" full>Pay</button>
+         </div>
+		 </div>
+</ion-content>

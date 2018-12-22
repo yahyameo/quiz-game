@@ -11,40 +11,46 @@ import { ToastController } from "ionic-angular";
 @Injectable()
 export class CommonService {
 
-  constructor(private toastCtrl: ToastController,public http:HttpClient) {
+  constructor(private toastCtrl: ToastController, public http: HttpClient) {
 
-}
- getCurrentCountry():any{
-  var requestUrl = "http://ip-api.com/json";
- return this.http.get(requestUrl);
-}
-  ConvertLocalTimeToUTC(now:any)
-    {
-      let date=new Date(now);
-       return new Date( date.getTime() + (date.getTimezoneOffset() * 60000));
-    }
-  ConvertUTCTimeToLocalTime(UTCDateString)
-    {
-        var convertdLocalTime = new Date(UTCDateString);
+  }
+  getCurrentCountry(): any {
+    var requestUrl = "http://ip-api.com/json";
+    return this.http.get(requestUrl);
+  }
+  ConvertLocalTimeToUTC(now: any) {
+    let date = new Date(now);
+    return new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+  }
+  ConvertUTCTimeToLocalTime(UTCDateString) {
+    var convertdLocalTime = new Date(UTCDateString);
 
-        var hourOffset = convertdLocalTime.getTimezoneOffset() / 60;
+    var hourOffset = convertdLocalTime.getTimezoneOffset() / 60;
 
-        convertdLocalTime.setHours( convertdLocalTime.getHours() - hourOffset ); 
+    convertdLocalTime.setHours(convertdLocalTime.getHours() - hourOffset);
 
-        return convertdLocalTime;
-    }
-presentToast(message,duration) {
-  let toast = this.toastCtrl.create({
-    message: message,
-    duration: duration,
-    position: 'bottom',
-  });
+    return convertdLocalTime;
+  }
+  getUserInfoByKey() {
+    var user = JSON.parse(localStorage.getItem("user"));
+   return user;
+  }
+  getSelectedClubInfo(){
+   var data=JSON.parse(localStorage.getItem("selectedClub"));
+   return data;
+  }
+  presentToast(message, duration) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: duration,
+      position: 'bottom',
+    });
 
-  toast.onDidDismiss(() => {
-    console.log('Dismissed toast');
-  });
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
 
-  toast.present();
-  toast.dismiss();
-}
+    toast.present();
+    toast.dismiss();
+  }
 }

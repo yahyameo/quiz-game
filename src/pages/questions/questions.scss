@@ -11,14 +11,23 @@
    }
    .question-opt{
     background-image: url("../../assets/icon/ans.png"); 
-    background-size: 274px;
+    background-size: contain;
     background-repeat: no-repeat;  
     height: 40px;
     padding: 10px; 
+    padding-top: 3px;
+   }
+   .column{
+    border: solid 2px mediumblue;
+    background-color: powderblue;
+    border-radius: 40px;
+    height: fit-content;
+    text-align: center;
+    margin: 10px;
    }
    .progress-percentage-wrapper {
     position: relative;
-    margin: 20px auto;
+    margin: 90px auto;
     font-size: 20px;
     width: 200px;
   //  height: 200px;

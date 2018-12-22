@@ -1,0 +1,19 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <span><ion-icon ios="ios-home" md="md-home"> Home</ion-icon></span>
+    <span style="float:right;"><ion-icon ios="ios-log-out" md="md-log-out"></ion-icon></span>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="login-content" padding>
+  <h2 style="text-align: center;">QUIZ CLUBS
+  </h2>
+  <div *ngFor="let item of clubsList" style="border-radius: 13px;" class="login-box">
+    <div>
+      <h4>{{item.name}}
+        <button (click)="goToQuestion(item);" ion-button class="btn" full>Start</button>
+      </h4>
+      <span>Prize: {{item.prize}} IVR</span><br>
+      <span> Joining Fee: {{item.joiningFee}} IVR</span>
+    </div>
+  </div>
+</ion-content>

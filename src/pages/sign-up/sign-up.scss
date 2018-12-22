@@ -24,6 +24,8 @@
       background: white;
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
+      position: fixed;
+      width: 90%;
     }
  
     ion-row {
@@ -52,14 +54,15 @@
      }
  
      .submit-btn {
-       background: #448AFF;
+       background-image: url("../../assets/icon/bg_btn_small.jpg");
        border-radius: 30px !important;
-       border: 1px solid #ffffff;
+       width: 100px;
      }
  
      .register-btn {
-       color: #ffffff;
-       font-size: 0.8em;
+           background-image: url("../../assets/icon/bg_btn_small.jpg");
+       border-radius: 30px !important;
+       width: 100px;
      }
   }
  

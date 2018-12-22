@@ -25,31 +25,20 @@ export class LoginPage {
  }
   public login() {
     this.showLoading();
-    this.authService.login(this.registerCredentials.email, this.registerCredentials.password)
-  //  .subscribe(
-  //           data => {
-  //             this.loading.dismiss();
-  //               console.log("POST Request is successful ", data);
-  //               localStorage.setItem('user', JSON.stringify(data));
-  //               this.navCtrl.push(HomePage);
-  //           },
-  //           error => {
-  //               console.log("Error", error);
-  //                this.loading.dismiss();
-  //           }
-  //       ); 
-    .then(value => {
-      if(value){
-      localStorage.setItem('user', JSON.stringify(value));
-      this.navCtrl.push(SelectGamePage);
-      }
-      else {
-      //  this.showError("Access Denied");
-      }
-      },
-      error => {
-    //    this.showError(error);
-      }); 
+    this.authService.login(this.registerCredentials)
+   .subscribe(
+            data => {
+              this.loading.dismiss();
+              localStorage.setItem("user",JSON.stringify(data["data"]));
+              console.log("POST Request is successful ", data);
+              this.navCtrl.push(SelectGamePage);
+            },
+            error => {
+                console.log("Error", error);
+                 this.loading.dismiss();
+            }
+        ); 
+ 
     
   }
  

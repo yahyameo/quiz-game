@@ -1,5 +1,5 @@
 import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
-import { NavController, LoadingController, ActionSheetController } from 'ionic-angular';
+import { NavController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AuthService } from "../../providers/auth/auth";
 import { UserService, User } from "../../providers/user/user";
 import * as firebase from 'firebase/app';
@@ -13,31 +13,31 @@ import { SelectGamePage } from "../select-game/select-game";
 @Component({
   selector: 'page-sign-up',
   templateUrl: 'sign-up.html',
- 
+
   animations: [
- 
+
     //For the logo
     trigger('flyInBottomSlow', [
       state('in', style({
         transform: 'translate3d(0,0,0)'
       })),
       transition('void => *', [
-        style({transform: 'translate3d(0,2000px,0'}),
+        style({ transform: 'translate3d(0,2000px,0' }),
         animate('2000ms ease-in-out')
       ])
     ]),
- 
+
     //For the background detail
     trigger('flyInBottomFast', [
       state('in', style({
         transform: 'translate3d(0,0,0)'
       })),
       transition('void => *', [
-        style({transform: 'translate3d(0,2000px,0)'}),
+        style({ transform: 'translate3d(0,2000px,0)' }),
         animate('1000ms ease-in-out')
       ])
     ]),
- 
+
     //For the login form
     trigger('bounceInBottom', [
       state('in', style({
@@ -45,113 +45,86 @@ import { SelectGamePage } from "../select-game/select-game";
       })),
       transition('void => *', [
         animate('2000ms 200ms ease-in', keyframes([
-          style({transform: 'translate3d(0,2000px,0)', offset: 0}),
-          style({transform: 'translate3d(0,-20px,0)', offset: 0.9}),
-          style({transform: 'translate3d(0,0,0)', offset: 1})
+          style({ transform: 'translate3d(0,2000px,0)', offset: 0 }),
+          style({ transform: 'translate3d(0,-20px,0)', offset: 0.9 }),
+          style({ transform: 'translate3d(0,0,0)', offset: 1 })
         ]))
       ])
     ]),
- 
+
     //For login button
     trigger('fadeIn', [
       state('in', style({
         opacity: 1
       })),
       transition('void => *', [
-        style({opacity: 0}),
+        style({ opacity: 0 }),
         animate('1000ms 2000ms ease-in')
       ])
     ])
   ]
 })
 export class SignUpPage {
-  myPhotoURL: any;
-  countryData:any;
   logoState: any = "in";
   cloudState: any = "in";
   loginState: any = "in";
   formState: any = "in";
-  userId:any;
-    formGroup = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+  userId: any;
+  formGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
-    profilePicture: new FormControl(''),
-    phone:new FormControl(''),
+    phone: new FormControl(''),
   });
   constructor(public navCtrl: NavController,
-  public authService: AuthService,public userService:UserService,public loadingCtrl: LoadingController,
-  public commonService:CommonService,public pictureUtils:PictureUtils,
-  private actionSheetCtrl: ActionSheetController,) {
-   // this.myPhotoURL="https://firebasestorage.googleapis.com/v0/b/quit-smoking-d888f.appspot.com/o/avatarPicture%2FRpCtUa2hZ6XxaTwQ5TOM14GKvZY2.jpg?alt=media&token=f58e2a34-abd6-4d64-b3d1-393f324c177c";
- this.commonService.getCurrentCountry().subscribe(data=>{
-this.countryData=data;
- });
+    public authService: AuthService, public loadingCtrl: LoadingController,
+    public commonService: CommonService,public toastCtrl: ToastController,
+    private actionSheetCtrl: ActionSheetController, ) {
+ 
   }
-  goToLogin(){
+  goToLogin() {
     this.navCtrl.push(LoginPage);
   }
   signup() {
-   if(this.formGroup.invalid){
-    this.commonService.presentToast('All fields are required',60000);
-    return false
-   }
+    if (this.formGroup.invalid) {
+      this.commonService.presentToast('All fields are required', 60000);
+      return false
+    }
     let loading = this.loadingCtrl.create({
-    content: 'Please wait...'
-  });
-  loading.present();
-    this.authService.signup(this.formGroup.value.email, this.formGroup.value.password).then(value => {
-      this.formGroup.value.userId=value.uid;
-      this.formGroup.value.location= this.countryData['country'];
-      this.formGroup.value.ipAddress=this.countryData["query"];
-     if(this.myPhotoURL){
-        this.formGroup.value.profilePicture=this.myPhotoURL;
-     }     
-      localStorage.setItem('user', JSON.stringify(value));
-      this.userService.addUser(this.formGroup.value);
-      loading.dismiss();
-      this.navCtrl.push(SelectGamePage);
+      content: 'Please wait...'
     });
-  }
-     changePicture(): void {
-     
-    let actionSheet = this.actionSheetCtrl.create({
-      enableBackdropDismiss: true,
-      buttons: [
+    loading.present();
+    this.authService.signup(this.formGroup.value)
+      .subscribe(
+      data => {
+        loading.dismiss();
+        console.log("POST Request is successful ", data);
+        if(data["success"])
         {
-          text: 'Take a picture',
-          icon: 'camera',
-          handler: () => {
-            let result=  this.pictureUtils.uploadHandler(false);
-           result.then((savedPicture) => {
-           this.myPhotoURL = savedPicture.downloadURL;
-         });
-          }
-        }, {
-          text: 'From gallery',
-          icon: 'images',
-          handler: () => {
-             let result=  this.pictureUtils.uploadHandler(true);
-           result.then((savedPicture) => {
-         this.myPhotoURL = savedPicture.downloadURL;
-         });
-          }
-        }
-      ]
-    });
-    actionSheet.present();
+        localStorage.setItem("user", JSON.stringify(data["data"]));
+        this.navCtrl.push(SelectGamePage);
+      }
+      else if(data["message"]["email"])
+             this.commonService.presentToast(data["message"]["email"][0],4000);
+
+      else if(data["message"]["mobile_no"])
+             this.commonService.presentToast(data["message"]["mobile_no"][0],4000);
+        
+      },
+      error => {
+        console.log("Error", error);
+        loading.dismiss();
+      }
+      );
   }
-   get firstName() {
-    return this.formGroup.get('firstName')
-  }
-  get lastName() {
-    return this.formGroup.get('lastName')
+
+  get name() {
+    return this.formGroup.get('name')
   }
   get email() {
     return this.formGroup.get('email')
   }
-   get phone() {
+  get phone() {
     return this.formGroup.get('phone')
   }
   get password() {

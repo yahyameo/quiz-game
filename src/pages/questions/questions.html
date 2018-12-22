@@ -3,32 +3,38 @@
 
         <ion-row>
             <ion-col>
+                <div>
+                    <progress-bar [progress]="progress"></progress-bar>
+                </div>
                 <div style="float:right;">
                     <span span style="color:yellow;margin-left: 20px;"><strong>12 /  1200</strong></span>
                 </div>
-                <div style="float:left;margin-left:60px;margin-right:60px;">
+                <div style="float:left;margin-right:60px;">
                     <div style="float:left;">
-                        <img style="width: 70px;border-radius: 85px;height: 70px;" src="assets/icon/user.png" />
-                    </div>
-                    <div style="float:right;margin: 15px;color:blue;">
-                        <span><strong>Free Club</strong></span>
-                        <br> <small><strong>200</strong></small>
+                        <table>
+                            <tr>
+                                <td>
+                                    <img style="width: 70px;height: 70px;" src="assets/icon/user.png" />
+                                </td>
+                                <td><label><strong>{{user.name}}</strong></label><br>
+                                    <label>{{selectedClub.name}}</label><br>
+                                    <small>100</small>
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            </ion-col>
-        </ion-row>
-
-        <ion-row>
-            <ion-col>
-                <div class="progress-percentage-wrapper">
+                <div style="margin-bottom:0px;" class="progress-percentage-wrapper">
                     <div class="progress-percentage ng-cloak"> 00:{{maxTime}}</div>
-                    <round-progress [background]="'#00FF00	'"
-                     [radius]="40" [stroke]="3" [color]="'#FF0000'" [current]="currentTimerValue" [max]="timerLimit"></round-progress>
+                    <round-progress [background]="'#00FF00	'" [radius]="40" [stroke]="3" [color]="'#FF0000'" [current]="currentTimerValue" [max]="timerLimit"></round-progress>
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-grid>
+    <!---- landscape-->
+    <ion-grid *ngIf="!portrait">
         <ion-row>
             <ion-col>
                 <div class="question">
@@ -38,14 +44,70 @@
                 </div>
             </ion-col>
         </ion-row>
-        <ion-row *ngFor="let item of questionList[currentQuestionIndex].options">
-            <ion-col>
-                <div (click)="selectAnswer(item);" class="question-opt">
-                    <span>{{item}}</span>
+        <ion-row>
+            <ion-col id="opt_0" (click)="selectAnswer(0);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].options[0]}}</span>
+                </div>
+            </ion-col>
+            <ion-col id="opt_1" (click)="selectAnswer(1);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].options[1]}}</span>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="column">
+                <div id="opt_2" (click)="selectAnswer(2);">
+                    <span>{{questionList[currentQuestionIndex].options[2]}}</span>
+                </div>
+            </ion-col>
+            <ion-col class="column">
+                <div id="opt_3" (click)="selectAnswer(3);">
+                    <span>{{questionList[currentQuestionIndex].options[3]}}</span>
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
-
+    <!---- portrait-->
+    <ion-grid *ngIf="portrait">
+        <ion-row>
+            <ion-col>
+                <div class="question">
+                    <p style="margin-left: 44px;width: 228px;;">
+                        {{questionList[currentQuestionIndex].question}}
+                    </p>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col id="opt_0" (click)="selectAnswer(0);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].options[0]}}</span>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col id="opt_1" (click)="selectAnswer(1);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].options[1]}}</span>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col id="opt_2" (click)="selectAnswer(2);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].options[2]}}</span>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col id="opt_3" (click)="selectAnswer(3);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].options[3]}}</span>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
 </ion-content>

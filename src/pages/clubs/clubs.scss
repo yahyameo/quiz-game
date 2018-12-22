@@ -1,19 +1,22 @@
-	page-login {
+	page-clubs {
  
   .login-content {
-   background-image: url("../../assets/icon/background.jpg");
+     background-image: url("../../assets/icon/background.jpg");
  
     .logo-row {
       padding-top: 50px;
       padding-bottom: 20px;
     }
- 
+ .btn {
+       background-image: url("../../assets/icon/bg_btn_small.jpg");
+       border-radius: 30px !important;
+       width: 100px;
+       float: right;
+     }
     .login-box {
       background: white;
-      padding: 20px 20px 0px 20px;
+     padding: 9px;
       margin-top: 30px;
-      position: fixed;
-      width: 90%;
     }
  
     ion-row {
@@ -34,7 +37,6 @@
      .signup-col {
        margin: 0px 16px 0px 16px;
        padding-bottom: 20px;
-       text-align: -webkit-center;
      }
  
      .item-inner {
@@ -43,34 +45,11 @@
      }
  
      .submit-btn {
-      background-image: url("../../assets/icon/bg_btn_small.jpg");
+       background: #448AFF;
        border-radius: 30px !important;
-       width: 100px;
-      // border: 1px solid #ffffff;
+       border: 1px solid #ffffff;
      }
- .facebook-btn{
-  background-image: url("../../assets/icon/with-facebook.png");
-background-size: cover;
-
-background-position-x: center;
-
-background-position-y: unset;
-
-width: 233px;
-height: 51px;
- }
- .google-btn{
-  background-image: url("../../assets/icon/google.png"); 
-  background-size: cover;
-
-background-position-x: center;
-
-background-position-y: unset;
-
-background-color: white;
-width: 233px;
-height: 51px;
- }
+ 
      .register-btn {
        color: #ffffff;
        font-size: 0.8em;

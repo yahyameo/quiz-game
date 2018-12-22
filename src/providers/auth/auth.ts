@@ -11,96 +11,91 @@ import { HttpHeaders } from '@angular/common/http';
 @Injectable()
 
 export class AuthService {
-  @ViewChild(Nav) nav: Nav;
-  user: Observable<firebase.User>;
-  userId:any;
-  constructor(private firebaseAuth: AngularFireAuth,private http:HttpClient) {
-    this.user = firebaseAuth.authState;
+    @ViewChild(Nav) nav: Nav;
+    user: Observable<firebase.User>;
+    userId: any;
+    constructor(private firebaseAuth: AngularFireAuth, private http: HttpClient) {
+        this.user = firebaseAuth.authState;
 
-  }
-
-  signup(email: string, password: string):any {
-  return  this.firebaseAuth
-      .auth
-      .createUserWithEmailAndPassword(email, password)
-      .catch(err => {
-        console.log('Something went wrong:',err.message);
-      });    
-  }
-get authenticated(): boolean {
-  return JSON.parse(localStorage.getItem('user')) !== null;
-}
- createAuthorizationHeader(headers:Headers) {
-    headers.append('Authorization', 'Basic ' +
-      btoa('a20e6aca-ee83-44bc-8033-b41f3078c2b6:c199f9c8-0548-4be79655-7ef7d7bf9d20')); 
-  }
-  loginWithPHP(){
+    }
+    get authenticated(): boolean {
+        return JSON.parse(localStorage.getItem('user')) !== null;
+    }
+    login(data) {
         var content = {
-      email: "yahyameo@gmail.com",
-      password:"123456"
-    };
-    const httpOptions = {
-     headers: new HttpHeaders({
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Access-Control-Allow-Origin':"*"
-    })
-};
-  return this.http.post("http://quizapp.dkventures.in/api/login",
-  content,httpOptions).subscribe(
+            email: data.email,
+            password: data.password
+        };
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            })
+        };
+        let url = "http://quizapp.dkventures.in/api/login";
+        return this.http.post(url,
+            content, httpOptions);
+    }
+    signup(data) {
+        var content = {
+            "email": data.email,
+            "password": data.password,
+            "name": data.name,
+            "mobile_no": data.phone
+        }
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            })
+        };
+        let url = "http://quizapp.dkventures.in/api/register";
+        return this.http.post(url, content, httpOptions);
+
+    }
+    getLevelId(content) {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            })
+        };
+        let token = JSON.parse(localStorage.getItem("data"))["token"];
+        let url = "http://quizapp.dkventures.in/api/get_user_level?token=" + token;
+        return this.http.get(url).subscribe(
             data => {
                 console.log("POST Request is successful ", data);
             },
             error => {
                 console.log("Error", error);
             }
-        );  ;
+        );;
 
-  }
-  login(email: string, password: string):any {
- return   this.firebaseAuth
-      .auth
-      .signInWithEmailAndPassword(email, password)
-      .catch(err => {
-        console.log('Something went wrong:',err.message);
-      });
-// var req={
-//   "email":email,
-//   "password":password,
-//   "headers": {
-//     "content-type": "application/json",
-//     "cache-control": "no-cache",
-//     "Access-Control-Allow-Origin":"*"
-//   }
-// }
-//   const headerDict = {
-//   'Content-Type': 'application/json',
-//   'Accept': 'application/json',
-//   'Access-Control-Allow-Headers': 'Content-Type',
-// }
+    }
+    getQuestionList(content) {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            })
+        };
+        let token = JSON.parse(localStorage.getItem("data"))["token"];
+        let url = "http://quizapp.dkventures.in/api/get_level_questions?token=" + token;
+        return this.http.get(url).subscribe(
+            data => {
+                console.log("POST Request is successful ", data);
+            },
+            error => {
+                console.log("Error", error);
+            }
+        );;
 
-// const requestOptions = {                                                                                                                                                                                 
-//   headers: new Headers(headerDict), 
-// };
-//     var content = {
-//       email: email,
-//       password:password
-//     };
-//     const httpOptions = {
-//      headers: new HttpHeaders({
-//   'Content-Type': 'application/json',
-//   'Accept': 'application/json',
-//   'Access-Control-Allow-Origin':"*"
-//     })
-// };
-//   return this.http.post("http://quizapp.dkventures.in/api/login",content,httpOptions);
+    }
 
-  }
-
-  logout() {
-    this.firebaseAuth
-      .auth
-      .signOut();
-  }
+    logout() {
+        this.firebaseAuth
+            .auth
+            .signOut();
+    }
 
 }

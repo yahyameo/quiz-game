@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RedeemPage } from "../redeem/redeem";
+import { TryAgainPage } from "../try-again/try-again";
 
 /**
  * Generated class for the CongratulationPage page.
@@ -21,7 +22,7 @@ rightAnswer:string;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
  this.totalQuestions=localStorage.getItem("totalQuestions");
  this.rightAnswer=localStorage.getItem("rightAnswer");
- this.points=parseInt(this.rightAnswer)*5;
+ this.points=100;
  }
 
   ionViewDidLoad() {

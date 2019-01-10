@@ -1,31 +1,48 @@
-<ion-content class="page-congratulation" padding>
-<div>
-  <img src="assets/icon/flayers.png">
-</div>
-<div>
-  <div style="float:left;">
-    <img style="width:90px;" src="assets/icon/trophy.png"/>
-  </div>
-  <div style="color:white;float:right;">
-   <h3 style="margin-bottom: 0rem;">Congratulations</h3>
-   <span><strong> You've got</strong></span><br>
-   <span><strong>$ {{points}} </strong></span>
-   </div>
-</div>
-<ion-card class="result" >
-  <!--<ion-card-content >-->
-    <div style="text-align: -webkit-auto;padding: 50px;">
-<h2><strong>  Total Questions {{totalQuestions}}</strong> </h2>
-<h2><strong> Right Answer {{rightAnswer}} </strong></h2>
-</div>
-  <!--</ion-card-content>-->
+<ion-header>
 
-</ion-card>
-<div style="text-align: center;">
-  <button class="btn-bg" (click)="goToRedeem();">
-  </button>
-</div>
-<div style="position:absolute;bottom:0">
-  <img src="assets/icon/flayers.png">
-</div>
+  <ion-navbar>
+    <ion-title>Congratulations
+      <balance-toolbar></balance-toolbar>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content class="page-congratulation" padding>
+  <div>
+    <img src="assets/icon/flayers.png">
+  </div>
+  <div>
+    <div style="float:left;">
+      <img style="width:90px;" src="assets/icon/congrate.jpg" />
+    </div>
+    <div style="color:white;float:right;">
+      <h3 style="margin-bottom: 0rem;">Congratulations</h3>
+      <span><strong> You've got</strong></span><br>
+      <span><strong>{{selectedClub.prize}} Coins</strong></span>
+    </div>
+  </div>
+  <ion-card>
+    <ion-card-content>
+      <strong> {{user.name}}</strong> we're pleased to inform you're really genius. We've credited {{selectedClub.prize}}
+      Coins to your wallet. Thank you for playing with us.
+    </ion-card-content>
+
+  </ion-card>
+  <div style="text-align: -webkit-center;">
+    <table>
+      <tr>
+        <td style="padding: 10px;"><button (click)="goToSelectGame()" ion-button class="btn btn-primary small-btn pull-left" full type="button">Home</button></td>
+        <td><button (click)="goToClubs()" ion-button class="btn btn-primary small-btn pull-left" full type="button">Play again</button></td>
+      </tr>
+    </table>
+  </div>
+  <div style="text-align: -webkit-center;">
+    <table>
+      <tr><td><label>Share on social media </label></td></tr>
+      <tr><td><button type="button" class="btn btn-primary small-btn pull-left" (click)="share()">Share</button></td></tr>
+    </table>
+  </div>
+  <div style="position:absolute;bottom:0">
+    <img src="assets/icon/flayers.png">
+  </div>
 </ion-content>

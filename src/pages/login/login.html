@@ -18,29 +18,27 @@
             <ion-item>
               <ion-input style="border: solid 1px;border-radius: 12px;" type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
             </ion-item>
-            <ion-item>
+            <!--<ion-item>
             <ion-label>Remember me</ion-label>
             <ion-checkbox></ion-checkbox>
-          </ion-item>
+          </ion-item>-->
           </ion-list>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="signup-col">
           <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
-          <a>Forgot password ?</a>
+          <a (click)="redirectToForgotPassword()">Forgot password ?</a>
         </ion-col>
       </ion-row>
     </form>
-     <ion-row>
-        <ion-col class="signup-col">
-          <img style="cursor:pointer;" src="assets/icon/with-facebook.png"/>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="signup-col">
-          <img style="cursor:pointer;" src="assets/icon/google.png"/>
-        </ion-col>
-      </ion-row> 
+      <div class="col">
+        <a href="#" class="fb btn">
+          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+         </a>
+        <a href="#" class="google btn"><i class="fa fa-google fa-fw">
+          </i> Login with Google+
+        </a>
+      </div>
   </div>
 </ion-content>

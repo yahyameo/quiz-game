@@ -20,7 +20,7 @@
               </div>
             </ion-item>
              <ion-item>
-              <ion-input placeholder="Phone" formControlName="phone" type="text"></ion-input>
+              <ion-input placeholder="Phone" formControlName="phone" maxlength="10" type="text" (input)="inputValidator($event)"></ion-input>
               <div *ngIf="phone.touched && phone.invalid" class="alert alert-danger">
                 Phone is required
               </div>

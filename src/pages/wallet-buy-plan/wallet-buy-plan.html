@@ -1,0 +1,30 @@
+<!--
+  Generated template for the WalletBuyPlanPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Wallet plan
+         <button (click)="buyManually()" type="button" class="badge badge-info pull-right">
+           <i class="fa fa-plus" aria-hidden="true"></i> 
+        Manually</button>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <span>Offers for you</span>
+<div *ngFor="let item of buyPlans" class="card">
+  <img class="card-img-top" src="assets/icon/coins.jpg" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{item.coins}} Coins</h5>
+    <p class="card-text">{{item.amount}} IVR</p>
+    <button ion-button class="submit-btn" (click)="buy(item)" full type="button">Buy</button>
+  </div>
+</div>
+</ion-content>

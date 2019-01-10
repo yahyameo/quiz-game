@@ -29,14 +29,24 @@ import {
   RoundProgressModule
 } from 'angular-svg-round-progressbar';
 import { CongratulationPage } from "../pages/congratulation/congratulation";
-import { RedeemPage } from "../pages/redeem/redeem";
-import { SplashPage } from "../pages/splash/splash";
 import { TryAgainPage } from "../pages/try-again/try-again";
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { ClubsPage } from "../pages/clubs/clubs";
 import { CheckPaymentPage } from "../pages/check-payment/check-payment";
 import { MakePaymentPage } from "../pages/make-payment/make-payment";
 import { ProgressBarComponent } from "../components/progress-bar/progress-bar";
+import { ReviewAnswerPage } from "../pages/review-answer/review-answer";
+import { ProfilePage } from "../pages/profile/profile";
+import { SurveyPage } from "../pages/survey/survey";
+import { ForgotPasswordPage } from "../pages/forgot-password/forgot-password";
+import { WalletPage } from "../pages/wallet/wallet";
+import { CoinsPage } from "../pages/coins/coins";
+import { QuizService } from '../providers/quiz-service/quiz-service';
+import { WalletBuyPlanPage } from "../pages/wallet-buy-plan/wallet-buy-plan";
+import { BalanceToolbarComponent } from "../components/balance-toolbar/balance-toolbar";
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { DataSharingService } from '../providers/data-sharing/data-sharing';
+import { WithdrawalLogPage } from "../pages/withdrawal-log/withdrawal-log";
 
 @NgModule({
   declarations: [
@@ -48,13 +58,20 @@ import { ProgressBarComponent } from "../components/progress-bar/progress-bar";
     QuestionsPage,
     CongratulationPage,
     TryAgainPage,
-    RedeemPage,
-    SplashPage,
     ClubsPage,
     CheckPaymentPage,
     MakePaymentPage,
+    ReviewAnswerPage,
+    ProfilePage,
+    SurveyPage,
+    WalletPage,
+    CoinsPage,
+    WalletBuyPlanPage,
+    ForgotPasswordPage,
+    WithdrawalLogPage,
     FlashCardComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    BalanceToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -78,11 +95,17 @@ import { ProgressBarComponent } from "../components/progress-bar/progress-bar";
     QuestionsPage,
     CongratulationPage,
     TryAgainPage,
-    RedeemPage,
     ClubsPage,
     CheckPaymentPage,
+    ReviewAnswerPage,
     MakePaymentPage,
-    SplashPage
+    ProfilePage,
+    SurveyPage,
+    ForgotPasswordPage,
+    WalletPage,
+    CoinsPage,
+    WalletBuyPlanPage,
+    WithdrawalLogPage,
   ],
   providers: [
     StatusBar,
@@ -96,6 +119,9 @@ import { ProgressBarComponent } from "../components/progress-bar/progress-bar";
     PictureUtils,
     Camera,
     ScreenOrientation,
+    QuizService,
+    SocialSharing,
+    DataSharingService,
 
   ]
 })

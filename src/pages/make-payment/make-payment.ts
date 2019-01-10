@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { QuestionsPage } from "../questions/questions";
+import { QuizService } from "../../providers/quiz-service/quiz-service";
+import { CommonService } from "../../providers/common-service/common-service";
+import { WalletPage } from "../wallet/wallet";
+import { HomePage } from "../home/home";
 
 /**
  * Generated class for the MakePaymentPage page.
@@ -17,23 +21,58 @@ import { QuestionsPage } from "../questions/questions";
 export class MakePaymentPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    public quizService: QuizService,
+    public commonService: CommonService) {
   }
   presentLoadingDefault() {
-  let loading = this.loadingCtrl.create({
-    content: 'Please wait...'
-  });
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
 
-  loading.present();
+    loading.present();
 
-  setTimeout(() => {
-    loading.dismiss();
-    this.navCtrl.push(QuestionsPage);
-  }, 5000);
-}
-goToQuestion(){
-this.presentLoadingDefault();
-}
+    setTimeout(() => {
+      loading.dismiss();
+      this.addWalletBalance();
+    }, 5000);
+  }
+  addWalletBalance() {
+    let selectedClub = this.commonService.getSelectedClubInfo();
+    let amount = this.navParams.get('amount');
+    let convertToCoin = this.navParams.get('convertToCoin');
+    let coins = this.navParams.get('coins');
+    this.quizService.addWallet(amount).subscribe(data => {
+      if (convertToCoin) {
+        this.quizService.convertWalletToCoin(coins).subscribe(data => {
+          let returnToStartQuiz = this.navParams.get('returnToStartQuiz');
+          if (returnToStartQuiz) {
+            this.quizService.getWalletBalance().subscribe(data => {
+              let joinFee = parseInt(this.commonService.getSelectedClubInfo()["joining_fee"]);
+              if (data["data"]["coins"] >= joinFee) {
+                this.navCtrl.push(QuestionsPage);
+              }
+            }, error => {
+
+            })
+          }
+          else {
+            this.navCtrl.push(WalletPage);
+          }
+        }, error => {
+          console.log(error);
+        })
+      }
+      else {
+        this.navCtrl.push(WalletPage, { "amountAdded": amount })
+      }
+    }, error => {
+      console.log(error);
+    })
+  }
+  goToQuestion() {
+    this.presentLoadingDefault();
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad MakePaymentPage');
   }

@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading, Platform, Navbar, AlertController } from 'ionic-angular';
 import { CongratulationPage } from "../congratulation/congratulation";
 import { TryAgainPage } from "../try-again/try-again";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
 import { CommonService } from "../../providers/common-service/common-service";
+import { QuizService } from "../../providers/quiz-service/quiz-service";
+import { SelectGamePage } from "../select-game/select-game";
 
 /**
  * Generated class for the QuestionsPage page.
@@ -19,110 +21,202 @@ import { CommonService } from "../../providers/common-service/common-service";
 })
 export class QuestionsPage {
   @ViewChild('slides') slides: any;
+  @ViewChild(Navbar) navBar: Navbar;
+
   timerLimit: any = 30;
   maxTime: any = this.timerLimit;
   timer: any;
   hidevalue: any;
   slideOptions: any;
-  selectedOptBgImg: any;
   flashCardFlipped: boolean = false;
   portrait: boolean = true;
-  correctAnswer: any[] = ["Markoni", "Antarctica", "Indonesia",
-    "UAE", "Gevora Hotel (Dubai)", "Nippon", "Trans-Canada", "Qzone", "Zeeshan Akhtar"]
+  correctAnswer: any = {};
   userChoosenAns: any[] = [];
-  questionList: any[] = [
-    {
-      "question": "Who invented radio ________",
-      "options": ["Markoni", "Newton", "Einstine", "Mandleve"]
-    },
-    {
-      "question": "The largest cold desert of the world is in ___________",
-      "options": ["Europe", "Antarctica", "Africa", "Asia"]
-    },
-    {
-      "question": "Which country has the most number of active volcanoes in the world?",
-      "options": ["Indonesia", "Pakistan", "India", "UK"]
-    },
-    {
-      "question": "Which country has world’s longest zipline?",
-      "options": ["UAE", "India", "Germany", "Russia"]
-    },
-    {
-      "question": "The world’s tallest hotel is _____________?",
-      "options": ["JW Marriott Marquis Hotel (Dubai)", "Gevora Hotel (Dubai)", "Marriott Marquis (NY)", "The Venetian (USA)"]
-    },
-    {
-      "question": "The Japanese call their country as __________?",
-      "options": ["Nikon", "Nippon", "Chingcho", "Ninja"]
-    },
-    {
-      "question": "Which of the following is the longest highway _____________?",
-      "options": ["Karakoram Highway", "Trans-Canada", "Highway 401", "Leh-Manali Highway"]
-    },
-    {
-      "question": "Which of the following is not a search engine?",
-      "options": ["Yahoo", "Qzone", "Bing", "Baidu"]
-    },
-    {
-      "question": "Who is the current CEO of Q-Mobile?",
-      "options": ["Anwar Saifullah Khan", "Zeeshan Akhtar", "Jawed Iqbal", "Wang Xiu Ying"]
-    },
-  ];
+  questionList: any[] = [];
   currentQuestionIndex: any = 0;
   user: any;
   progress: any;
   selectedClub: any;
+  errorMsg: any = null;
+  loading: Loading;
+  levelId: any;
+  categoryId: any;
+  walletBalance:any={balance:null,coins:null};
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public commonService: CommonService,
-    private screenOrientation: ScreenOrientation) {
-    this.user = this.commonService.getUserInfoByKey();
-    this.progress = 100 * ((this.questionList.length - this.userChoosenAns.length) / this.questionList.length);
-    this.startTimer();
-    localStorage.setItem("totalQuestions", this.questionList.length.toString());
+    private screenOrientation: ScreenOrientation,
+    public quizService: QuizService, private loadingCtrl: LoadingController,
+    public platform:Platform,
+    public alertCtrl:AlertController) {
+    this.user = this.commonService.getUserInfo();
+    this.loadWalletBalance()
+    this.progress = 100 * ((this.userChoosenAns.length) / this.questionList.length);
+    this.setOreintation();
+    this.selectedClub = commonService.getSelectedClubInfo();
+    this.loadQuestions();
+     this.setBackButtonPressEvent();
+  }
+   setBackButtonPressEvent() {
+    this.platform.registerBackButtonAction(() => {
+     // this.confirmPopup();
+    }, 1);
+  }
+  setBackButtonAction() {
+    this.navBar.backButtonClick = () => {
+    //  this.confirmPopup();
+    }
+  }
+  setOreintation() {
     this.screenOrientation.onChange().subscribe(
       () => {
         this.portrait = !this.portrait;
       }
     );
-    this.selectedClub = commonService.getSelectedClubInfo();
   }
+  loadWalletBalance() {
+    this.quizService.getWalletBalance().subscribe(data => {
+      this.walletBalance = data["data"];
+    }, error => {
 
+    })
+  }
+  dummyQuestion() {
+    this.questionList = [
+      {
+        "id": 2,
+        "level_id": "1",
+        "question": "Who invented radio ________",
+        "option_1": "Markoni",
+        "option_2": "Newton",
+        "option_3": "Einstine",
+        "option_4": "Mandleve"
+      },
+      {
+        "id": 1,
+        "level_id": "1",
+        "question": "What type of component might add USB ports to a desktop computer?",
+        "option_1": "eGPU",
+        "option_2": "SSD",
+        "option_3": "Memory module",
+        "option_4": "Expansion card"
+      }
+    ];
+    this.commonService.setQuestionsList(this.questionList)
+    localStorage.setItem("totalQuestions", this.questionList.length.toString());
+  }
+  loadQuestions() {
+    this.showLoading();
+          let categoryId = this.commonService.getSelectedClubInfo()["id"];
+          this.categoryId = categoryId;
+          this.quizService.getLevelId(categoryId).subscribe(
+            data => {
+              if (data["success"]) {
+                let levelId = data["data"]["user_level_id"];
+                this.levelId = levelId;
+                this.quizService.getQuestionList(categoryId, levelId).subscribe(
+                  data => {
+                    this.commonService.setQuestionsList(data["data"]);
+                    this.questionList = data["data"];
+                    localStorage.setItem("totalQuestions", this.questionList.length.toString());
+                    this.startTimer();
+                    console.log(data);
+                    this.hideLoading();
+                    let id = [];
+                    for (var i = 0; i < this.questionList.length; i++) {
+                      id.push(this.questionList[i]["id"])
+                    }
+                    this.quizService.getAnswers(levelId, id).subscribe(
+                      data => {
+                        var result = data["data"];
+                        this.correctAnswer = result;
+                        this.commonService.setCorrectAnswer(this.correctAnswer);
+                      }, error => {
+                        console.log(error);
+                      });
+                  },
+                  error => {
+                    console.log("Error", error);
+                    this.hideLoading();
+                  }
+                );
+              }
+              else {
+                this.errorMsg = data["message"];
+                this.hideLoading();
+              }
+            },
+            error => {
+              console.log("Error", error);
+              this.hideLoading();
+            }
+          );
+  }
+  loadAnswer() {
+
+  }
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: false
+    });
+    this.loading.present();
+  }
+  hideLoading() {
+    this.loading.dismiss();
+  }
+  lockOptions: boolean;
   selectAnswer(id: any) {
+    if (this.lockOptions)
+         {return false;}
+    this.lockOptions = true;
     localStorage.setItem("timeout", JSON.stringify(false));
-    var answer = this.questionList[this.currentQuestionIndex].options[id];
-    this.selectedOptBgImg = 'url(../../assets/icon/right-ans.png)';
+    var questionId = this.questionList[this.currentQuestionIndex]["id"];
+    var obj = { "id": questionId, "answerId": id };
     document.getElementById("opt_" + id).style.backgroundColor = "limegreen";
     setTimeout(x => {
-      this.loadNextQuestion(answer);
-         document.getElementById("opt_" + id).style.backgroundColor = null;
+      this.loadNextQuestion(obj);
+      document.getElementById("opt_" + id).style.backgroundColor = null;
+      this.lockOptions = false;
     }, 1000);
   }
   loadNextQuestion(answer: any) {
     this.maxTime = this.timerLimit;
     this.currentTimerValue = 0;
     clearInterval(this.timer);
-    this.startTimer();
     if (this.currentQuestionIndex != this.questionList.length - 1) {
+      this.startTimer();
       this.currentQuestionIndex++;
       this.userChoosenAns.push(answer);
     }
     else {
       this.userChoosenAns.push(answer);
+      this.commonService.setUserChoosenAnswer(this.userChoosenAns);
+      this.commonService.setCorrectAnswer(this.correctAnswer);
       this.checkRightAnswer();
       let totalQuestions = parseInt(localStorage.getItem("totalQuestions"));
       let rightAnswer = parseInt(localStorage.getItem("rightAnswer"));
+      let percentage = 100 * (rightAnswer / totalQuestions)
+      this.saveAnswerResult(percentage);
       if (totalQuestions != rightAnswer)
         this.navCtrl.push(TryAgainPage);
       else
         this.navCtrl.push(CongratulationPage);
-
     }
-    this.progress = 100 * ((this.questionList.length - this.userChoosenAns.length) / this.questionList.length);
+    this.progress = 100 * ((this.userChoosenAns.length) / this.questionList.length);
+  }
+  saveAnswerResult(percentage) {
+    this.quizService.saveAnswerResult(this.levelId, this.categoryId, percentage)
+      .subscribe(data => {
+        console.log(data);
+      }, error => {
+        console.log(error);
+      })
   }
   checkRightAnswer() {
     var rightAnswer = 0;
     for (var i = 0; i < this.questionList.length; i++) {
-      if (this.correctAnswer[i] == this.userChoosenAns[i]) {
+      let id = this.userChoosenAns[i]["id"];
+      if (this.correctAnswer[id] == this.userChoosenAns[i]["answerId"]) {
         rightAnswer++;
       }
     }
@@ -149,7 +243,30 @@ export class QuestionsPage {
 
 
   }
+  confirmPopup() {
+    let confirm = this.alertCtrl.create({
+      title: 'Please Confirm',
+      message:"Do you want to exit ?",
+      buttons: [
+        {
+          text: 'NO',
+          handler: () => {
+        
+          }
+        },
+        {
+          text: 'YES',
+          handler: () => {
+            this.navCtrl.push(SelectGamePage);
+            clearInterval(this.timer);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
   ionViewDidLoad() {
+   // this.setBackButtonAction();
     console.log('ionViewDidLoad QuestionsPage');
   }
 

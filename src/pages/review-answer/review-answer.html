@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Review Answer</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="login-content" padding>
+  <!---- portrait-->
+  <ion-grid *ngFor="let item of questionList;index as i">
+    <ion-row>
+      <ion-col>
+        <div class="question-bg-color">
+          <p>
+            <span> {{i+1}}.</span> {{item.question}}
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col id="opt_0" [ngStyle]="{'background-color':(checkRightAnswer(item.id,1)?'green':checkForWrongAnswer(item.id)==1?'red':'powderblue')}"
+        class="column">
+        <div>
+          <span>{{item.option_1}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col id="opt_1" [ngStyle]="{'background-color':(checkRightAnswer(item.id,2)?'green':checkForWrongAnswer(item.id)==2?'red':'powderblue')}"
+        class="column">
+        <div>
+          <span>{{item.option_2}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col id="opt_2" [ngStyle]="{'background-color':(checkRightAnswer(item.id,3)?'green':checkForWrongAnswer(item.id)==3?'red':'powderblue')}"
+        class="column">
+        <div>
+          <span>{{item.option_3}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col id="opt_3" [ngStyle]="{'background-color':(checkRightAnswer(item.id,4)?'green':checkForWrongAnswer(item.id)==4?'red':'powderblue')}"
+        class="column">
+        <div>
+          <span>{{item.option_4}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="checkForWrongAnswer(item.id)!=correctAnswer[item.id]">
+      <ion-col>
+        <button id="btnReview_{{item.id}}" (click)="openReviewPopup(item);" ion-button class="submit-btn" full type="button">Review</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastController } from "ionic-angular";
+import { ToastController, Loading, LoadingController, AlertController } from "ionic-angular";
 
 /*
   Generated class for the CommonServiceProvider provider.
@@ -10,40 +10,72 @@ import { ToastController } from "ionic-angular";
 */
 @Injectable()
 export class CommonService {
-
-  constructor(private toastCtrl: ToastController, public http: HttpClient) {
+  userChoosenAns: any = [];
+  correctAnswer: any = [];
+  questionList: any;
+  loading:Loading;
+  constructor(private toastCtrl: ToastController, public http: HttpClient,
+   private loadingCtrl: LoadingController,
+   public alertCtrl:AlertController) {
 
   }
-  getCurrentCountry(): any {
-    var requestUrl = "http://ip-api.com/json";
-    return this.http.get(requestUrl);
+  setQuestionsList (questionList:any){
+    this.questionList=questionList;
   }
-  ConvertLocalTimeToUTC(now: any) {
-    let date = new Date(now);
-    return new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+  getQuestionsList() {
+    return this.questionList;
   }
-  ConvertUTCTimeToLocalTime(UTCDateString) {
-    var convertdLocalTime = new Date(UTCDateString);
-
-    var hourOffset = convertdLocalTime.getTimezoneOffset() / 60;
-
-    convertdLocalTime.setHours(convertdLocalTime.getHours() - hourOffset);
-
-    return convertdLocalTime;
+  setUserChoosenAnswer(userChoosenAns: any) {
+    this.userChoosenAns = userChoosenAns;
   }
-  getUserInfoByKey() {
+  getUserChoosenAnswer() {
+    return this.userChoosenAns;
+  }
+  setCorrectAnswer(correctAnswer: any) {
+    this.correctAnswer = correctAnswer;
+  }
+  getCorrectAnswer() {
+    return this.correctAnswer;
+  }
+  getUserInfo() {
     var user = JSON.parse(localStorage.getItem("user"));
-   return user;
+    return user;
   }
-  getSelectedClubInfo(){
-   var data=JSON.parse(localStorage.getItem("selectedClub"));
-   return data;
+  getSelectedClubInfo() {
+    var data = JSON.parse(localStorage.getItem("selectedClub"));
+    return data;
+  }
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: false
+    });
+    this.loading.present();
+  }
+  messagePopup(message) {
+    let confirm = this.alertCtrl.create({
+      message: message,
+      buttons: [
+        {
+          text: 'Close',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+  }
+  hideLoading(){
+     this.loading.dismiss();
   }
   presentToast(message, duration) {
     let toast = this.toastCtrl.create({
       message: message,
       duration: duration,
-      position: 'bottom',
+      position: 'top',
+      showCloseButton:true
     });
 
     toast.onDidDismiss(() => {
@@ -51,6 +83,5 @@ export class CommonService {
     });
 
     toast.present();
-    toast.dismiss();
   }
 }

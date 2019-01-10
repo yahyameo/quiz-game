@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Loading, IonicPage, App } from 'ionic-angular';
 import { CommonService } from "../../providers/common-service/common-service";
 import { AuthService } from "../../providers/auth/auth";
 import { SignUpPage } from "../sign-up/sign-up";
 import { HomePage } from "../home/home";
 import { SelectGamePage } from "../select-game/select-game";
+import { ForgotPasswordPage } from "../forgot-password/forgot-password";
+import { DataSharingService } from "../../providers/data-sharing/data-sharing";
+import { MyApp } from "../../app/app.component";
  
 @IonicPage()
 @Component({
@@ -18,7 +21,10 @@ export class LoginPage {
   constructor(
   private alertCtrl: AlertController, 
   private loadingCtrl: LoadingController,public navCtrl: NavController,
-  public commonService:CommonService,public authService:AuthService) { }
+  public commonService:CommonService,
+  public authService:AuthService,
+  public dataSharingService:DataSharingService,
+  public appCtrl: App) { }
 
  public createAccount(){
    this.navCtrl.push(SignUpPage);
@@ -29,12 +35,14 @@ export class LoginPage {
    .subscribe(
             data => {
               this.loading.dismiss();
+              window.location.reload()
               localStorage.setItem("user",JSON.stringify(data["data"]));
               console.log("POST Request is successful ", data);
               this.navCtrl.push(SelectGamePage);
             },
             error => {
                 console.log("Error", error);
+                alert(error)
                  this.loading.dismiss();
             }
         ); 
@@ -49,5 +57,7 @@ export class LoginPage {
     });
     this.loading.present();
   }
- 
+ redirectToForgotPassword(){
+   this.navCtrl.push(ForgotPasswordPage);
+ }
 }

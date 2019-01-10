@@ -1,5 +1,5 @@
 import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
-import { NavController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
+import { NavController, LoadingController, ActionSheetController, ToastController, AlertController } from 'ionic-angular';
 import { AuthService } from "../../providers/auth/auth";
 import { UserService, User } from "../../providers/user/user";
 import * as firebase from 'firebase/app';
@@ -78,17 +78,24 @@ export class SignUpPage {
   });
   constructor(public navCtrl: NavController,
     public authService: AuthService, public loadingCtrl: LoadingController,
-    public commonService: CommonService,public toastCtrl: ToastController,
-    private actionSheetCtrl: ActionSheetController, ) {
- 
+    public commonService: CommonService, public toastCtrl: ToastController,
+    private actionSheetCtrl: ActionSheetController,
+    public alertCtrl: AlertController) {
+
   }
   goToLogin() {
     this.navCtrl.push(LoginPage);
   }
+
   signup() {
     if (this.formGroup.invalid) {
       this.commonService.presentToast('All fields are required', 60000);
       return false
+    }
+    else if(this.formGroup.value.phone.length!=10)
+    {
+      this.commonService.presentToast('Please enter 10 digit Phone number', 60000);
+      return false 
     }
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -97,19 +104,32 @@ export class SignUpPage {
     this.authService.signup(this.formGroup.value)
       .subscribe(
       data => {
-        loading.dismiss();
         console.log("POST Request is successful ", data);
-        if(data["success"])
-        {
-        localStorage.setItem("user", JSON.stringify(data["data"]));
-        this.navCtrl.push(SelectGamePage);
-      }
-      else if(data["message"]["email"])
-             this.commonService.presentToast(data["message"]["email"][0],4000);
+        if (data["success"]) {
+          this.authService.login(this.formGroup.value).subscribe(
+            data => {
+              loading.dismiss();
+              localStorage.setItem("user", JSON.stringify(data["data"]));
+              this.navCtrl.push(SelectGamePage, {
+                newUser: true
+              });
+            },
+            error => {
+              console.log("Error", error);
+              loading.dismiss();
+            }
+          );
+        }
+        else if (data["message"]["email"])
+         { 
+           this.commonService.presentToast(data["message"]["email"][0], 4000);
+           loading.dismiss();
+         }
 
-      else if(data["message"]["mobile_no"])
-             this.commonService.presentToast(data["message"]["mobile_no"][0],4000);
-        
+        else if (data["message"]["mobile_no"])
+          this.commonService.presentToast(data["message"]["mobile_no"][0], 4000);
+          loading.dismiss();
+
       },
       error => {
         console.log("Error", error);
@@ -129,6 +149,16 @@ export class SignUpPage {
   }
   get password() {
     return this.formGroup.get('password')
+  }
+ public inputValidator(event: any) {
+    //console.log(event.target.value);
+    const pattern = /^[0-9]*$/;   
+    //let inputChar = String.fromCharCode(event.charCode)
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9]/g, "");
+      // invalid character, prevent input
+
+    }
   }
 
 }

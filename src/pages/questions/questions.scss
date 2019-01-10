@@ -1,13 +1,20 @@
 .page-questions {
    background-image: url("../../assets/icon/background.jpg");
    .question{
-    background-image: url("../../assets/icon/question.png"); 
+    background-image: url("../../assets/icon/question.gif"); 
     background-size: 274px;
     background-repeat: no-repeat;
     min-height: 80px;
     width: 100%;
     margin: 10px;  
     padding-top: 10px;
+   }
+   .question-bg-color{
+    background-color: powderblue;
+    min-height: 69px;
+    padding: 4px;
+    border-radius: 10px;
+    border: solid 2px blue;
    }
    .question-opt{
     background-image: url("../../assets/icon/ans.png"); 
@@ -24,6 +31,11 @@
     height: fit-content;
     text-align: center;
     margin: 10px;
+   }
+   .error-msg{
+           text-align: center;
+    height: 110px;
+    background-color: whitesmoke;
    }
    .progress-percentage-wrapper {
     position: relative;

@@ -1,0 +1,16 @@
+page-wallet {
+ .content {
+     background-image: url("../../assets/icon/background.jpg");
+  }
+   .profile-image{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+     .submit-btn {
+       background-image: url("../../assets/icon/bg_btn_small.png");
+       background-repeat: no-repeat;
+       border-radius: 30px !important;
+       min-width: 100px;
+     }
+}

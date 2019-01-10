@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { FlashCardComponent } from './flash-card/flash-card';
+import { BalanceToolbarComponent } from './balance-toolbar/balance-toolbar';
 @NgModule({
-	declarations: [FlashCardComponent],
+	declarations: [FlashCardComponent,
+    BalanceToolbarComponent],
 	imports: [],
-	exports: [FlashCardComponent]
+	exports: [FlashCardComponent,
+    BalanceToolbarComponent]
 })
 export class ComponentsModule {}

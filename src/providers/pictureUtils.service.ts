@@ -71,7 +71,8 @@ async uploadHandler(fromMobile:boolean) {
   else{
     base64 = await this.captureImage();
   }
-  return await this.createUploadTask(base64);
+  //return await this.createUploadTask(base64);
+  return base64;
 }
  guid() {
   function s4() {

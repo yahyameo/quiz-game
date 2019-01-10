@@ -1,3 +1,4 @@
+
 <ion-content class="page-questions">
     <ion-grid>
 
@@ -6,38 +7,48 @@
                 <div>
                     <progress-bar [progress]="progress"></progress-bar>
                 </div>
-                <div style="float:right;">
+                <!--<div style="float:right;">
                     <span span style="color:yellow;margin-left: 20px;"><strong>12 /  1200</strong></span>
-                </div>
-                <div style="float:left;margin-right:60px;">
+                </div>-->
+                <div style="float:left">
                     <div style="float:left;">
                         <table>
                             <tr>
                                 <td>
                                     <img style="width: 70px;height: 70px;" src="assets/icon/user.png" />
                                 </td>
-                                <td><label><strong>{{user.name}}</strong></label><br>
-                                    <label>{{selectedClub.name}}</label><br>
-                                    <small>100</small>
+                                <td style="padding-left:10px;"><label><strong>{{user.name}}</strong>
+                                </label><br>
+                                    <label>{{selectedClub.name}}
+                                        <span style="margin-left: 10px;"><small class="badge badge-info">
+                                        <i class="fa fa-inr" aria-hidden="true"></i>  {{walletBalance.balance}} </small>
+<small class="badge badge-warning">
+ {{walletBalance.coins}} Coins</small>
+</span>
+                                        </label><br>
+                                    <small>Prize:{{selectedClub.prize}} Coins</small>
                                 </td>
-                            </tr>
-                            <tr>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <div style="margin-bottom:0px;" class="progress-percentage-wrapper">
+                <div *ngIf="!errorMsg" style="margin-bottom:0px;" class="progress-percentage-wrapper">
                     <div class="progress-percentage ng-cloak"> 00:{{maxTime}}</div>
                     <round-progress [background]="'#00FF00	'" [radius]="40" [stroke]="3" [color]="'#FF0000'" [current]="currentTimerValue" [max]="timerLimit"></round-progress>
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
+    <div class="error-msg" *ngIf="errorMsg">
+        <h4 style="padding: 12px;color:red;">Sorry!</h4>
+        <p>Please try again tomorrow</p>
+    </div>
     <!---- landscape-->
     <ion-grid *ngIf="!portrait">
         <ion-row>
             <ion-col>
-                <div class="question">
+                <div class="question-bg-color">
+                    <img src="assets/icon/question_mark.png" style="width: 62px;float: left;">
                     <p style="margin-left: 44px;width: 228px;;">
                         {{questionList[currentQuestionIndex].question}}
                     </p>
@@ -45,35 +56,36 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col id="opt_0" (click)="selectAnswer(0);" class="column">
-                <div>
-                    <span>{{questionList[currentQuestionIndex].options[0]}}</span>
-                </div>
-            </ion-col>
             <ion-col id="opt_1" (click)="selectAnswer(1);" class="column">
                 <div>
-                    <span>{{questionList[currentQuestionIndex].options[1]}}</span>
+                    <span>{{questionList[currentQuestionIndex].option_1}}</span>
+                </div>
+            </ion-col>
+            <ion-col id="opt_2" (click)="selectAnswer(2);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].option_2}}</span>
                 </div>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col class="column">
-                <div id="opt_2" (click)="selectAnswer(2);">
-                    <span>{{questionList[currentQuestionIndex].options[2]}}</span>
+                <div id="opt_3" (click)="selectAnswer(3);">
+                    <span>{{questionList[currentQuestionIndex].option_3}}</span>
                 </div>
             </ion-col>
             <ion-col class="column">
-                <div id="opt_3" (click)="selectAnswer(3);">
-                    <span>{{questionList[currentQuestionIndex].options[3]}}</span>
+                <div id="opt_4" (click)="selectAnswer(4);">
+                    <span>{{questionList[currentQuestionIndex].option_4}}</span>
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
     <!---- portrait-->
-    <ion-grid *ngIf="portrait">
+    <ion-grid *ngIf="portrait&&questionList.length>0">
         <ion-row>
             <ion-col>
-                <div class="question">
+                <div class="question-bg-color">
+                    <img src="assets/icon/question_mark.png" style="width: 62px;float: left;">
                     <p style="margin-left: 44px;width: 228px;;">
                         {{questionList[currentQuestionIndex].question}}
                     </p>
@@ -81,30 +93,30 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col id="opt_0" (click)="selectAnswer(0);" class="column">
-                <div>
-                    <span>{{questionList[currentQuestionIndex].options[0]}}</span>
-                </div>
-            </ion-col>
-        </ion-row>
-        <ion-row>
             <ion-col id="opt_1" (click)="selectAnswer(1);" class="column">
                 <div>
-                    <span>{{questionList[currentQuestionIndex].options[1]}}</span>
+                    <span>{{questionList[currentQuestionIndex].option_1}}</span>
                 </div>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col id="opt_2" (click)="selectAnswer(2);" class="column">
                 <div>
-                    <span>{{questionList[currentQuestionIndex].options[2]}}</span>
+                    <span>{{questionList[currentQuestionIndex].option_2}}</span>
                 </div>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col id="opt_3" (click)="selectAnswer(3);" class="column">
                 <div>
-                    <span>{{questionList[currentQuestionIndex].options[3]}}</span>
+                    <span>{{questionList[currentQuestionIndex].option_3}}</span>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col id="opt_4" (click)="selectAnswer(4);" class="column">
+                <div>
+                    <span>{{questionList[currentQuestionIndex].option_4}}</span>
                 </div>
             </ion-col>
         </ion-row>

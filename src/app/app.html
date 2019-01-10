@@ -1,1 +1,25 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+  <ion-header class="bar-profile">
+    <div *ngIf="user" class="profile">
+      <div style="width:100px;height:100px;line-height:100px;" class="data-letters">{{getFirstLetter(user.name)}}
+        <div (click)="changePicture();" class="topright"><span> <ion-icon name="camera"></ion-icon></span></div>
+      </div>
+      <h3 class="name">Hi, {{user.name}}</h3>
+    </div>
+
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+          <ion-icon  name="{{p.icon}}"></ion-icon> 
+           {{p.title}}
+      </button>
+      <button menuClose ion-item (click)="loginAndLogout()">
+           <ion-icon name="{{authService.authenticated? 'log-out':'log-in'}}"></ion-icon>
+        {{authService.authenticated? 'Logout':'Login'}}
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+<ion-nav #content [root]="rootPage"></ion-nav>

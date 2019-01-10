@@ -1,0 +1,19 @@
+page-review-answer { 
+  .login-content {
+     background-image: url("../../assets/icon/background.jpg");
+  }
+  .column{
+    border: solid 2px mediumblue;
+    background-color: powderblue;
+    border-radius: 40px;
+    height: fit-content;
+    text-align: center;
+    margin-top: 8px;
+   }
+   .submit-btn {
+       background-image: url("../../assets/icon/bg_btn_small.jpg");
+       border-radius: 30px !important;
+       width: 80px;
+       float: right;
+     }
+}

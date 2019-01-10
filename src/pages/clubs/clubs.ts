@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { QuestionsPage } from "../questions/questions";
 import { CheckPaymentPage } from "../check-payment/check-payment";
+import { QuizService } from "../../providers/quiz-service/quiz-service";
+import { WalletBuyPlanPage } from "../wallet-buy-plan/wallet-buy-plan";
+import { CommonService } from "../../providers/common-service/common-service";
 
 @IonicPage()
 @Component({
@@ -9,26 +12,43 @@ import { CheckPaymentPage } from "../check-payment/check-payment";
   templateUrl: 'clubs.html',
 })
 export class ClubsPage {
-clubsList:any=[];
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  clubsList: any = [];
+  walletBalance: any = { balance: null, coins: null };
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public quizService: QuizService,
+    public commonService: CommonService) {
     this.loadClubs();
+    this.getWalletBalance();
   }
-  loadClubs(){
-    this.clubsList=[
-      {"name":"Free Club","prize":100,"joiningFee":0,"free":true},
-      {"name":"Bronze Club","prize":500,"joiningFee":200},
-      {"name":"Silver Club","prize":1000,"joiningFee":500},
-      {"name":"Gold Club","prize":1500,"joiningFee":1000},
-      {"name":"Diamond Club","prize":3000,"joiningFee":1500},
-      {"name":"Platinum Club","prize":5000,"joiningFee":2000},
-    ]
+  loadClubs() {
+    this.commonService.showLoading();
+    this.quizService.getCategory().subscribe(data => {
+      this.clubsList = data["data"];
+      this.commonService.hideLoading();
+    }, error => {
+      console.log(error)
+      this.commonService.hideLoading();
+    })
   }
-  goToQuestion(club:any) {
-    localStorage.setItem("selectedClub",JSON.stringify(club));
-    if(club.free)
-       this.navCtrl.push(QuestionsPage);
+  getWalletBalance() {
+    this.quizService.getWalletBalance().subscribe(data => {
+      this.walletBalance = data["data"];
+    }, error => {
+
+    })
+  }
+  goToQuestion(club: any) {
+    localStorage.setItem("selectedClub", JSON.stringify(club));
+    if (parseFloat(club["joining_fee"]) == 0 || parseFloat(this.walletBalance["coins"]) >= parseFloat(club["joining_fee"])) {
+      this.navCtrl.push(QuestionsPage);
+    }
     else
-       this.navCtrl.push(CheckPaymentPage);
+    { 
+      let coinsToBuy=parseFloat(club["joining_fee"])-this.walletBalance["coins"];
+      let amount=(coinsToBuy*30)/100;
+      this.navCtrl.push(CheckPaymentPage, {"amount":amount,"returnToStartQuiz": true,"coins":coinsToBuy }); 
+    }
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad ClubsPage');

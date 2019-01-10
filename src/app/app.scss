@@ -4,3 +4,59 @@
     top: 0;
     left: 0;
 }
+
+.bar-profile {
+    background-color: dodgerblue !important;
+    height: 170px;
+}
+
+.profile {
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-top: 15px;
+}
+
+.name {
+    color: #FFFFFF;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.profile-picture {
+    border-radius: 50%;
+}
+
+.has-header
+{
+    top: 169px;
+}
+.data-letters {
+  content:attr(data-letters);
+  display:inline-block;
+  font-size:1em;
+  width:100px;
+  height:100px;
+  line-height:100px;
+ // text-align:center;
+  border-radius:50%;
+  background:powderblue;
+ // vertical-align:middle;
+    font-size: 18px;
+  color:white;
+ // width:65px;height:65px;
+  }
+  .topright {
+    position: absolute;
+    bottom: 25px;
+    right: 43px;
+    font-size: 18px;
+    margin-right: 38px;
+    font-size: 30px;
+}

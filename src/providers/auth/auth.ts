@@ -30,8 +30,11 @@ export class AuthService {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'postman-token': '5c15a108-a00b-e9ec-fc4c-5996a9f34d33',
             })
         };
+
         let url = "http://quizapp.dkventures.in/api/login";
         return this.http.post(url,
             content, httpOptions);
@@ -53,44 +56,7 @@ export class AuthService {
         return this.http.post(url, content, httpOptions);
 
     }
-    getLevelId(content) {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            })
-        };
-        let token = JSON.parse(localStorage.getItem("data"))["token"];
-        let url = "http://quizapp.dkventures.in/api/get_user_level?token=" + token;
-        return this.http.get(url).subscribe(
-            data => {
-                console.log("POST Request is successful ", data);
-            },
-            error => {
-                console.log("Error", error);
-            }
-        );;
-
-    }
-    getQuestionList(content) {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            })
-        };
-        let token = JSON.parse(localStorage.getItem("data"))["token"];
-        let url = "http://quizapp.dkventures.in/api/get_level_questions?token=" + token;
-        return this.http.get(url).subscribe(
-            data => {
-                console.log("POST Request is successful ", data);
-            },
-            error => {
-                console.log("Error", error);
-            }
-        );;
-
-    }
+    
 
     logout() {
         this.firebaseAuth

@@ -1,19 +1,23 @@
-<ion-header no-border>
+<ion-header>
   <ion-toolbar>
-    <span><ion-icon ios="ios-home" md="md-home"> Home</ion-icon></span>
-    <span style="float:right;"><ion-icon ios="ios-log-out" md="md-log-out"></ion-icon></span>
+    <ion-buttons left>
+      <button ion-button left menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Quiz game
+      <balance-toolbar></balance-toolbar>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="login-content" padding>
-  <h2 style="text-align: center;">QUIZ CLUBS
-  </h2>
-  <div *ngFor="let item of clubsList" style="border-radius: 13px;" class="login-box">
+  <div *ngFor="let item of clubsList" style="border-radius: 13px;background-color:powderblue;" class="login-box">
     <div>
       <h4>{{item.name}}
         <button (click)="goToQuestion(item);" ion-button class="btn" full>Start</button>
       </h4>
-      <span>Prize: {{item.prize}} IVR</span><br>
-      <span> Joining Fee: {{item.joiningFee}} IVR</span>
+      <span>Prize: {{item.prize}} Coins</span><br>
+      <span> Joining Fee: {{item.joining_fee}} Coins</span>
     </div>
   </div>
 </ion-content>

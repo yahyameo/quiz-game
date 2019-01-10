@@ -1,0 +1,50 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Coins
+      <balance-toolbar></balance-toolbar>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="content" padding>
+      <div align="center" >
+        <img src="assets/icon/user.png" class="profile-image">
+          <h2 style="text-align:center">{{user.name}}</h2>
+      </div>
+  <ion-list>
+      <ion-item>
+        <h2 style="text-align:center">Your coins balance</h2>
+      </ion-item>
+ <ion-item>
+ <h1 style="text-align:center"><ion-badge class="pull-left" color="primary"> {{totalCoinBalance}} Coins</ion-badge>
+    <button ion-button class="submit-btn pull-right" (click)="redeemCoinPopup()" full type="button">Redeem</button>
+ </h1>
+    </ion-item>
+  </ion-list>
+  <div *ngFor="let item of coinsLog" class="card border-primary mb-3">
+  <div class="card-header">
+  <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+ <span *ngIf="item.credit"> {{item.credit?item.credit:0}} coins credited</span>
+ <span *ngIf="!item.credit"> {{item.debit?item.debit:0}} coins debited</span>
+ <span class="pull-right">{{item.created_at | date}}</span>
+ </div>
+  <div class="card-body text-primary">
+    <p class="card-text">{{item.description}}</p>
+    <span> Coin balance:
+      <span *ngIf="!item.credit" class="badge badge-danger"> {{item.coin_balance}} </span>
+      <span *ngIf="item.credit" class="badge badge-success"> {{item.coin_balance}} </span>
+      <small class="pull-right"><i class="fa fa-clock-o" aria-hidden="true"></i>
+       {{item.created_at | date:'shortTime'}}</small>
+    </span>
+
+  </div>
+</div>
+<ion-card  *ngIf="!coinsLog">
+  <ion-card-content style="color:red">
+    <p>Not record found</p>
+  </ion-card-content>
+</ion-card>
+</ion-content>

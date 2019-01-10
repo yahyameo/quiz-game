@@ -1,0 +1,16 @@
+page-coins {
+  .content {
+     background-image: url("../../assets/icon/background.jpg");
+  }
+   .profile-image{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+    .submit-btn {
+      background-image: url("../../assets/icon/bg_btn_small.png");
+       border-radius: 30px !important;
+       width: 40%;
+      // border: 1px solid #ffffff;
+     }
+}

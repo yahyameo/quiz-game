@@ -31,7 +31,7 @@ export class CheckPaymentPage {
     let convertToCoin = this.navParams.get('convertToCoin');
     let coins = this.navParams.get('coins');
     this.hideWalletMoneyChkBox=this.navParams.get('hideWalletMoneyChkBox');
-    this.requestData = { "amount": amount, "coins": coins,"convertToCoin":convertToCoin }
+    this.requestData = { "amount": amount, "coins": coins,"convertToCoin":convertToCoin,"offers":this.navParams.get("offers") }
     this.loadWalletBalance();
   }
   loadWalletBalance() {
@@ -48,7 +48,7 @@ export class CheckPaymentPage {
     let returnToStartQuiz=this.navParams.get('returnToStartQuiz');
     this.navCtrl.push(MakePaymentPage, { "amount": this.requestData.amount, 
     "convertToCoin": this.requestData.convertToCoin, "coins": this
-    .requestData.coins,"returnToStartQuiz":returnToStartQuiz });
+    .requestData.coins,"returnToStartQuiz":returnToStartQuiz,"offers":this.requestData.offers });
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckPaymentPage');

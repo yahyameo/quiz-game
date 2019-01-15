@@ -42,9 +42,11 @@ export class MakePaymentPage {
     let amount = this.navParams.get('amount');
     let convertToCoin = this.navParams.get('convertToCoin');
     let coins = this.navParams.get('coins');
+    let offers=this.navParams.get("offers")?this.navParams.get("offers"):0;
     this.quizService.addWallet(amount).subscribe(data => {
       if (convertToCoin) {
-        this.quizService.convertWalletToCoin(coins).subscribe(data => {
+        this.quizService.convertWalletToCoin(coins,offers).subscribe(data => {
+          this.commonService.notifyWhenBalanceChange();
           let returnToStartQuiz = this.navParams.get('returnToStartQuiz');
           if (returnToStartQuiz) {
             this.quizService.getWalletBalance().subscribe(data => {
@@ -64,6 +66,7 @@ export class MakePaymentPage {
         })
       }
       else {
+        this.commonService.notifyWhenBalanceChange();
         this.navCtrl.push(WalletPage, { "amountAdded": amount })
       }
     }, error => {

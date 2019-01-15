@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastController, Loading, LoadingController, AlertController } from "ionic-angular";
+import { Subject } from "rxjs/Subject";
 
 /*
   Generated class for the CommonServiceProvider provider.
@@ -10,6 +11,8 @@ import { ToastController, Loading, LoadingController, AlertController } from "io
 */
 @Injectable()
 export class CommonService {
+  private notify = new Subject<any>();
+  notifyObservable$ = this.notify.asObservable();
   userChoosenAns: any = [];
   correctAnswer: any = [];
   questionList: any;
@@ -18,6 +21,9 @@ export class CommonService {
    private loadingCtrl: LoadingController,
    public alertCtrl:AlertController) {
 
+  }
+  public notifyWhenBalanceChange() {
+      this.notify.next();
   }
   setQuestionsList (questionList:any){
     this.questionList=questionList;
@@ -52,7 +58,7 @@ export class CommonService {
     });
     this.loading.present();
   }
-  messagePopup(message) {
+  messagePopup(message:any) {
     let confirm = this.alertCtrl.create({
       message: message,
       buttons: [

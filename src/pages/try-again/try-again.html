@@ -7,7 +7,8 @@
 </ion-header>
 <ion-content class="login-content" padding>
   <div *ngIf="!timeout">
-    <h3>Sorry better luck next time</h3>
+     <h3 *ngIf="(selectedClub.id==1)||(selectedClub.id!=1&&percentage<90)">Sorry! btter luck next time</h3>
+    <h3 *ngIf="(selectedClub.id!=1)&&((percentage>=90)||(percentage>90&&percentage<100))">Sorry! You were very close to success</h3>
     <div style="text-align: center;margin-top: 50px;">
       <table style="width:100%;">
         <tr>
@@ -16,12 +17,13 @@
           </td>
         </tr>
         <tr>
-          <td><strong> Your score:{{((rightAnswer/totalQuestions)*100).toFixed(0)}}% </strong></td>
+          <td><strong> Your score:{{percentage}}% </strong></td>
         </tr>
       </table>
     </div>
-    <p *ngIf="selectedClub.id==1">Dear <strong> {{user.name}}</strong> you did your best, do some more effort to head towards success </p>
-    <p *ngIf="selectedClub.id!=1">Dear <strong> {{user.name}}</strong> don’t be upset we have credited 500 coins back to your coin balance,keep playing best of luck for next game </p>
+    <p *ngIf="(selectedClub.id==1)||(selectedClub.id!=1&&percentage<90)">Dear <strong> {{user.name}}</strong> you did Your best, do some more efforts to head toward Success </p>
+    <p *ngIf="(selectedClub.id!=1)&&((percentage>=90)||(percentage>90&&percentage<100))">Dear <strong> {{user.name}}</strong> we appreciate your efforts and going to refund 50% coins of your joining fee in your wallet.
+   <strong>Better luck next time</strong> </p>
     <div style="text-align: -webkit-center;">
       <table>
         <tr>

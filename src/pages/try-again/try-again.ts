@@ -25,6 +25,8 @@ export class TryAgainPage {
   rightAnswer: any;
   timeout: boolean;
   selectedClub:any;
+  percentage:any;
+  unregisterBackButtonAction:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public commonService: CommonService, 
     public platform: Platform,
@@ -35,9 +37,13 @@ export class TryAgainPage {
     this.rightAnswer = parseInt(localStorage.getItem("rightAnswer"));
     this.timeout = JSON.parse(localStorage.getItem("timeout"));
     this.selectedClub=this.commonService.getSelectedClubInfo();
+    this.percentage= ((this.rightAnswer/this.totalQuestions)*100).toFixed(0)
   }
+  ionViewWillLeave() {
+        this.unregisterBackButtonAction && this.unregisterBackButtonAction();
+    }
    setBackButtonPressEvent() {
-    this.platform.registerBackButtonAction(() => {
+  this.unregisterBackButtonAction=  this.platform.registerBackButtonAction(() => {
       this.navCtrl.push(SelectGamePage);
     }, 1);
   }
@@ -57,8 +63,5 @@ export class TryAgainPage {
     this.navCtrl.push(ReviewAnswerPage);
   }
   backButtonAction() {
-  }
-  ionViewWillLeave() {
-  // this.navCtrl.push(SelectGamePage);
   }
 }

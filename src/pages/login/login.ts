@@ -35,7 +35,7 @@ export class LoginPage {
    .subscribe(
             data => {
               this.loading.dismiss();
-              window.location.reload()
+              this.commonService.notifyWhenBalanceChange();
               localStorage.setItem("user",JSON.stringify(data["data"]));
               console.log("POST Request is successful ", data);
               this.navCtrl.push(SelectGamePage);

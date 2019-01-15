@@ -47,6 +47,7 @@ import { BalanceToolbarComponent } from "../components/balance-toolbar/balance-t
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { DataSharingService } from '../providers/data-sharing/data-sharing';
 import { WithdrawalLogPage } from "../pages/withdrawal-log/withdrawal-log";
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
 @NgModule({
   declarations: [
@@ -121,6 +122,8 @@ import { WithdrawalLogPage } from "../pages/withdrawal-log/withdrawal-log";
     ScreenOrientation,
     QuizService,
     SocialSharing,
+    FileTransfer,
+    FileTransferObject,
     DataSharingService,
 
   ]

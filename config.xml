@@ -86,5 +86,7 @@
     <plugin name="cordova-plugin-x-socialsharing" spec="5.4.3">
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.1+" />
     </plugin>
-    <engine name="android" spec="7.0.0" />
+    <plugin name="cordova-plugin-camera" spec="4.0.3" />
+    <plugin name="cordova-plugin-file-transfer" spec="1.7.1" />
+    <engine name="android" spec="7.1.4" />
 </widget>

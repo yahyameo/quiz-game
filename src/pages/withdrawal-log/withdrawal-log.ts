@@ -62,6 +62,7 @@ export class WithdrawalLogPage {
             this.commonService.showLoading();
             var amountToWithdraw = document.getElementById("txtwithdrawMoney")["value"];
             this.quizService.withdraw(amountToWithdraw).subscribe(data => {
+              if(data["success"]) this.commonService.notifyWhenBalanceChange();
               this.commonService.messagePopup(data["message"]);
               this.commonService.hideLoading();
             }, error => {

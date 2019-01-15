@@ -109,6 +109,7 @@ export class SignUpPage {
           this.authService.login(this.formGroup.value).subscribe(
             data => {
               loading.dismiss();
+              this.commonService.notifyWhenBalanceChange();
               localStorage.setItem("user", JSON.stringify(data["data"]));
               this.navCtrl.push(SelectGamePage, {
                 newUser: true

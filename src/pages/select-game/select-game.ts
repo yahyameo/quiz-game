@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, EventEmitter } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { HomePage } from "../home/home";
 import { AuthService } from "../../providers/auth/auth";
@@ -19,16 +19,22 @@ import { SurveyPage } from "../survey/survey";
 })
 export class SelectGamePage {
   newUser: any;
+  public unregisterBackButtonAction: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public commonService: CommonService,
     public authService: AuthService,
     public alertCtrl: AlertController,
-    public platform: Platform) {
+    private platform: Platform) {
     this.newUser = navParams.get('newUser');
     this.setBackButtonPressEvent();
   }
+  ionViewWillLeave() {
+        // Unregister the custom back button action for this page
+        this.unregisterBackButtonAction && this.unregisterBackButtonAction();
+    }
+
   setBackButtonPressEvent() {
-    this.platform.registerBackButtonAction(() => {
+   this.unregisterBackButtonAction =  this.platform.registerBackButtonAction(() => {
       this.confirmPopup();
     }, 1);
   }

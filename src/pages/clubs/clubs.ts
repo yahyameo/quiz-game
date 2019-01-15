@@ -43,11 +43,25 @@ export class ClubsPage {
     if (parseFloat(club["joining_fee"]) == 0 || parseFloat(this.walletBalance["coins"]) >= parseFloat(club["joining_fee"])) {
       this.navCtrl.push(QuestionsPage);
     }
-    else
-    { 
-      let coinsToBuy=parseFloat(club["joining_fee"])-this.walletBalance["coins"];
-      let amount=(coinsToBuy*30)/100;
-      this.navCtrl.push(CheckPaymentPage, {"amount":amount,"returnToStartQuiz": true,"coins":coinsToBuy }); 
+    else {
+      let coinsToBuy = parseFloat(club["joining_fee"]) - this.walletBalance["coins"];
+      let amount = (coinsToBuy * 30) / 100;
+      if (amount <= parseFloat(this.walletBalance['balance'])) {
+        this.commonService.showLoading();
+        this.quizService.convertWalletToCoin(coinsToBuy,0).subscribe(data => {
+          this.commonService.notifyWhenBalanceChange();
+          if (data["message"]) {
+            this.navCtrl.push(QuestionsPage);
+          }
+          this.commonService.hideLoading();
+        }, error => {
+          console.log(error);
+          this.commonService.hideLoading();
+        })
+      }
+      else {
+        this.navCtrl.push(CheckPaymentPage, { "amount": amount, "returnToStartQuiz": true, "coins": coinsToBuy,"convertToCoin":true });
+      }
     }
   }
   ionViewDidLoad() {

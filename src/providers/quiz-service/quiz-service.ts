@@ -126,9 +126,10 @@ export class QuizService {
         let url = "http://quizapp.dkventures.in/api/convert_coin_to_wallet?token=" + token;
         return this.http.post(url, content, httpOptions);
     }
-    convertWalletToCoin(coins: any) {
+    convertWalletToCoin(coins: any,offers:any) {
         var content = {
             "coins": coins,
+            "offer":offers
         }
         const httpOptions = {
             headers: new HttpHeaders({
@@ -188,14 +189,15 @@ export class QuizService {
     saveProfilePicture(file) {
         var form = new FormData();
         form.append("profile_image", file);
+        let token = JSON.parse(localStorage.getItem("user"))["token"];
         const httpOptions = {
             headers: new HttpHeaders({
-              //  'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                "Content-Type": "",
+              //  'Accept': 'application/json',
+                'Authorization':'Bearer '+ token
             })
         };
-        let token = JSON.parse(localStorage.getItem("user"))["token"];
-        let url = "http://quizapp.dkventures.in/api/save_profile_image?token=" + token;
+        let url = "http://quizapp.dkventures.in/api/save_profile_image";
         return this.http.post(url, form, httpOptions);
     }
     saveAnswerResult(levelId, categoryId, percentage) {

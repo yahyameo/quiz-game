@@ -22,7 +22,7 @@ import { SelectGamePage } from "../select-game/select-game";
 export class QuestionsPage {
   @ViewChild('slides') slides: any;
   @ViewChild(Navbar) navBar: Navbar;
-
+  unregisterBackButtonAction: any;
   timerLimit: any = 30;
   maxTime: any = this.timerLimit;
   timer: any;
@@ -41,30 +41,28 @@ export class QuestionsPage {
   loading: Loading;
   levelId: any;
   categoryId: any;
-  walletBalance:any={balance:null,coins:null};
+  questionIds:any=[];
+  walletBalance: any = { balance: null, coins: null };
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public commonService: CommonService,
     private screenOrientation: ScreenOrientation,
     public quizService: QuizService, private loadingCtrl: LoadingController,
-    public platform:Platform,
-    public alertCtrl:AlertController) {
+    private platform: Platform,
+    public alertCtrl: AlertController) {
     this.user = this.commonService.getUserInfo();
-    this.loadWalletBalance()
     this.progress = 100 * ((this.userChoosenAns.length) / this.questionList.length);
     this.setOreintation();
     this.selectedClub = commonService.getSelectedClubInfo();
     this.loadQuestions();
-     this.setBackButtonPressEvent();
+    this.setBackButtonPressEvent();
   }
-   setBackButtonPressEvent() {
-    this.platform.registerBackButtonAction(() => {
-     // this.confirmPopup();
+  ionViewWillLeave() {
+    this.unregisterBackButtonAction && this.unregisterBackButtonAction();
+  }
+  setBackButtonPressEvent() {
+    this.unregisterBackButtonAction = this.platform.registerBackButtonAction(() => {
+      this.confirmPopup()
     }, 1);
-  }
-  setBackButtonAction() {
-    this.navBar.backButtonClick = () => {
-    //  this.confirmPopup();
-    }
   }
   setOreintation() {
     this.screenOrientation.onChange().subscribe(
@@ -104,52 +102,75 @@ export class QuestionsPage {
     this.commonService.setQuestionsList(this.questionList)
     localStorage.setItem("totalQuestions", this.questionList.length.toString());
   }
+  getAnswers(answer:any) {
+    this.quizService.getAnswers(this.levelId, this.questionIds).subscribe(
+      data => {
+      var result = data["data"];
+      this.correctAnswer = result;
+      this.commonService.setCorrectAnswer(this.correctAnswer);
+      this.userChoosenAns.push(answer);
+      this.commonService.setUserChoosenAnswer(this.userChoosenAns);
+      this.checkRightAnswer();
+      let totalQuestions = parseInt(localStorage.getItem("totalQuestions"));
+      let rightAnswer = parseInt(localStorage.getItem("rightAnswer"));
+      let percentage = 100 * (rightAnswer / totalQuestions)
+      this.saveAnswerResult(percentage);
+      if (totalQuestions != rightAnswer)
+        this.navCtrl.push(TryAgainPage);
+      else
+        this.navCtrl.push(CongratulationPage);
+      }, error => {
+        console.log(error);
+      });
+  }
   loadQuestions() {
     this.showLoading();
-          let categoryId = this.commonService.getSelectedClubInfo()["id"];
-          this.categoryId = categoryId;
-          this.quizService.getLevelId(categoryId).subscribe(
+    let categoryId = this.commonService.getSelectedClubInfo()["id"];
+    this.categoryId = categoryId;
+    this.quizService.getLevelId(categoryId).subscribe(
+      data => {
+        if (data["success"]) {
+          let levelId = data["data"]["user_level_id"];
+          this.levelId = levelId;
+          this.quizService.getQuestionList(categoryId, levelId).subscribe(
             data => {
-              if (data["success"]) {
-                let levelId = data["data"]["user_level_id"];
-                this.levelId = levelId;
-                this.quizService.getQuestionList(categoryId, levelId).subscribe(
-                  data => {
-                    this.commonService.setQuestionsList(data["data"]);
-                    this.questionList = data["data"];
-                    localStorage.setItem("totalQuestions", this.questionList.length.toString());
-                    this.startTimer();
-                    console.log(data);
-                    this.hideLoading();
-                    let id = [];
-                    for (var i = 0; i < this.questionList.length; i++) {
-                      id.push(this.questionList[i]["id"])
-                    }
-                    this.quizService.getAnswers(levelId, id).subscribe(
-                      data => {
-                        var result = data["data"];
-                        this.correctAnswer = result;
-                        this.commonService.setCorrectAnswer(this.correctAnswer);
-                      }, error => {
-                        console.log(error);
-                      });
-                  },
-                  error => {
-                    console.log("Error", error);
-                    this.hideLoading();
-                  }
-                );
-              }
-              else {
-                this.errorMsg = data["message"];
-                this.hideLoading();
-              }
+              if (data["success"]) this.commonService.notifyWhenBalanceChange();
+              this.loadWalletBalance();
+              this.commonService.setQuestionsList(data["data"]);
+              this.questionList = data["data"];
+              localStorage.setItem("totalQuestions", this.questionList.length.toString());
+              this.startTimer();
+              console.log(data);
+              this.hideLoading();
+              // let id = [];
+              // for (var i = 0; i < this.questionList.length; i++) {
+              //   id.push(this.questionList[i]["id"])
+              // }
+              // this.quizService.getAnswers(levelId, id).subscribe(
+              //   data => {
+              //     var result = data["data"];
+              //     this.correctAnswer = result;
+              //     this.commonService.setCorrectAnswer(this.correctAnswer);
+              //   }, error => {
+              //     console.log(error);
+              //   });
             },
             error => {
               console.log("Error", error);
               this.hideLoading();
             }
           );
+        }
+        else {
+          this.errorMsg = data["message"];
+          this.hideLoading();
+        }
+      },
+      error => {
+        console.log("Error", error);
+        this.hideLoading();
+      }
+    );
   }
   loadAnswer() {
 
@@ -167,10 +188,11 @@ export class QuestionsPage {
   lockOptions: boolean;
   selectAnswer(id: any) {
     if (this.lockOptions)
-         {return false;}
+    { return false; }
     this.lockOptions = true;
     localStorage.setItem("timeout", JSON.stringify(false));
     var questionId = this.questionList[this.currentQuestionIndex]["id"];
+    this.questionIds.push(questionId);
     var obj = { "id": questionId, "answerId": id };
     document.getElementById("opt_" + id).style.backgroundColor = "limegreen";
     setTimeout(x => {
@@ -189,18 +211,7 @@ export class QuestionsPage {
       this.userChoosenAns.push(answer);
     }
     else {
-      this.userChoosenAns.push(answer);
-      this.commonService.setUserChoosenAnswer(this.userChoosenAns);
-      this.commonService.setCorrectAnswer(this.correctAnswer);
-      this.checkRightAnswer();
-      let totalQuestions = parseInt(localStorage.getItem("totalQuestions"));
-      let rightAnswer = parseInt(localStorage.getItem("rightAnswer"));
-      let percentage = 100 * (rightAnswer / totalQuestions)
-      this.saveAnswerResult(percentage);
-      if (totalQuestions != rightAnswer)
-        this.navCtrl.push(TryAgainPage);
-      else
-        this.navCtrl.push(CongratulationPage);
+      this.getAnswers(answer);
     }
     this.progress = 100 * ((this.userChoosenAns.length) / this.questionList.length);
   }
@@ -246,12 +257,12 @@ export class QuestionsPage {
   confirmPopup() {
     let confirm = this.alertCtrl.create({
       title: 'Please Confirm',
-      message:"Do you want to exit ?",
+      message: "Do you want to exit ?",
       buttons: [
         {
           text: 'NO',
           handler: () => {
-        
+
           }
         },
         {
@@ -266,7 +277,7 @@ export class QuestionsPage {
     confirm.present();
   }
   ionViewDidLoad() {
-   // this.setBackButtonAction();
+    // this.setBackButtonAction();
     console.log('ionViewDidLoad QuestionsPage');
   }
 

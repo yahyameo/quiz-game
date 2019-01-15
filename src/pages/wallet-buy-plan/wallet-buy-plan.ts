@@ -70,19 +70,20 @@ export class WalletBuyPlanPage {
             let amount = (coins * 30 / 100);
             this.selectedPlan = { "amount": amount, "coins": coins }
             // this.navCtrl.push(CheckPaymentPage,{"amount":amount,"convertToCoin":true})
-            this.buy(this.selectedPlan);
+            this.buy(this.selectedPlan,0);
           }
         }
       ]
     });
     confirm.present();
   }
-  buy(plan: any) {
+  buy(plan: any,offers:any) {
     this.commonService.showLoading();
     this.selectedPlan = plan;
-    this.quizService.convertWalletToCoin(plan["coins"]).subscribe(data => {
+    this.quizService.convertWalletToCoin(plan["coins"],offers).subscribe(data => {
       this.commonService.hideLoading();
       if (data["success"]) {
+        this.commonService.notifyWhenBalanceChange();
         this.commonService.messagePopup(this.selectedPlan.coins + " " + data["message"]);
         let returnToStartQuiz = this.navParams.get('returnToStartQuiz');
         if (returnToStartQuiz) {
@@ -97,7 +98,7 @@ export class WalletBuyPlanPage {
         }
       }
       else {
-        this.buyPopup(data["message"]);
+        this.buyPopup(data["message"],offers);
 
       }
     }, error => {
@@ -106,7 +107,7 @@ export class WalletBuyPlanPage {
     })
   }
   toast: any;
-  buyPopup(message) {
+  buyPopup(message,offers) {
     let confirm = this.alertCtrl.create({
       message: message,
       buttons: [
@@ -121,7 +122,7 @@ export class WalletBuyPlanPage {
           handler: () => {
             var amountToAdd = this.selectedPlan.amount;
             let returnToStartQuiz = this.navParams.get('returnToStartQuiz');
-            this.navCtrl.push(CheckPaymentPage, { "amount": amountToAdd, "convertToCoin": true, "coins": this.selectedPlan.coins, "returnToStartQuiz": returnToStartQuiz })
+            this.navCtrl.push(CheckPaymentPage, { "amount": amountToAdd, "convertToCoin": true, "coins": this.selectedPlan.coins, "returnToStartQuiz": returnToStartQuiz,"offers":offers })
           }
         }
       ]

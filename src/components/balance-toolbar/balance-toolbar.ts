@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { QuizService } from "../../providers/quiz-service/quiz-service";
+import { CommonService } from "../../providers/common-service/common-service";
 
 /**
  * Generated class for the BalanceToolbarComponent component.
@@ -14,17 +15,24 @@ import { QuizService } from "../../providers/quiz-service/quiz-service";
 export class BalanceToolbarComponent {
 
   text: string;
-  @Output('walletBalance') walletBalance=new EventEmitter();
-//walletBalance: any = { balance: 0, coins: 0 };
-  constructor(public quizService:QuizService) {
+  @Output() walletBalance = new EventEmitter();
+  //walletBalance: any = { balance: 0, coins: 0 };
+  constructor(public quizService: QuizService,
+    public commonService: CommonService) {
     console.log('Hello BalanceToolbarComponent Component');
     this.getBalance();
+    this.updateBalance();
   }
-getBalance() {
-    this.quizService.getWalletBalance().subscribe(data => {
-      this.walletBalance = data["data"];
-    }, error => {
+  updateBalance() {
+    this.commonService.notifyObservable$.subscribe((res) => {
+      this.getBalance()
+    });
+  }
+  getBalance() {
+      this.quizService.getWalletBalance().subscribe(data => {
+        this.walletBalance = data["data"];
+      }, error => {
 
-    })
+      })
   }
 }

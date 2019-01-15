@@ -1,10 +1,10 @@
 <ion-menu [content]="content">
   <ion-header class="bar-profile">
-    <div *ngIf="user" class="profile">
-      <div style="width:100px;height:100px;line-height:100px;" class="data-letters">{{getFirstLetter(user.name)}}
+    <div  class="profile">
+      <div style="width:100px;height:100px;line-height:100px;" class="data-letters">{{getFirstLetter(user?.name)}}
         <div (click)="changePicture();" class="topright"><span> <ion-icon name="camera"></ion-icon></span></div>
       </div>
-      <h3 class="name">Hi, {{user.name}}</h3>
+      <h3 class="name">Hi, {{user?.name}}</h3>
     </div>
 
   </ion-header>

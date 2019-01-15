@@ -26,86 +26,62 @@ import { WithdrawalLogPage } from "../pages/withdrawal-log/withdrawal-log";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  pages: Array<{ title: string, component: any,icon:string,customIcon:any }>;
-  rootPage:any =SelectGamePage;
-  user:Observable<any>;
-  myPhotoURL:any;
-  constructor(platform: Platform, statusBar: StatusBar, 
-  splashScreen: SplashScreen,modalCtrl: ModalController,public authService:AuthService,
-  public commonService:CommonService,
-  public pictureUtils:PictureUtils,
-  public actionSheetCtrl:ActionSheetController,
-  public quizService:QuizService,
-  public dataSharingService:DataSharingService,
-  public app: App,
-  public alertCtrl:AlertController
-) {
+  pages: Array<{ title: string, component: any, icon: string, customIcon: any }>;
+  rootPage: any = SelectGamePage;
+  user: Observable<any>;
+  myPhotoURL: any;
+  errorMsg: Observable<any>;
+  constructor(
+    private platform: Platform, statusBar: StatusBar,
+    splashScreen: SplashScreen, modalCtrl: ModalController, public authService: AuthService,
+    public commonService: CommonService,
+    public pictureUtils: PictureUtils,
+    public actionSheetCtrl: ActionSheetController,
+    public quizService: QuizService,
+    public dataSharingService: DataSharingService,
+    public app: App,
+    public alertCtrl: AlertController
+  ) {
+
     platform.ready().then(() => {
-       this.dataSharingService.isUserLoggedIn.subscribe( value => {
-                this.user = this.commonService.getUserInfo();
-        });
+      this.user = this.commonService.getUserInfo();
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-       if(!localStorage.getItem("user")){
-        this.rootPage=LoginPage;
+      if (!localStorage.getItem("user")) {
+        this.rootPage = LoginPage;
       }
       //  let splash = modalCtrl.create(SplashPage);
       //       splash.present();
     });
-     platform.registerBackButtonAction(() => {
-      // Catches the active view
-      let nav = app.getActiveNavs()[0];
-      let activeView = nav.getActive();                
-      // Checks if can go back before show up the alert
-      if(activeView.name === 'QuestionsPage') {
-         // this.confirmPopup();
-      }
-  });
-  
     this.loadPages();
+    this.getUpdateProfile();
   }
-   confirmPopup() {
-    let confirm = this.alertCtrl.create({
-      title: 'Please Confirm',
-      message:"Do you want to exit ?",
-      buttons: [
-        {
-          text: 'NO',
-          handler: () => {
-        
-          }
-        },
-        {
-          text: 'YES',
-          handler: () => {
-            this.nav.push(SelectGamePage);
-          }
-        }
-      ]
+  getUpdateProfile() {
+    this.commonService.notifyObservable$.subscribe((res) => {
+      this.user = this.commonService.getUserInfo();
     });
-    confirm.present();
   }
-  loadPages(){
-     this.pages = [
-      { title: 'Profile', component: ProfilePage,icon:'contact',customIcon:null },
-      { title: 'Cash Wallet', component: WalletPage,icon:'card',customIcon:null },
-      { title: 'Coins', component: CoinsPage,icon:'cash',customIcon:null },
-      { title: 'Withdrawal', component: WithdrawalLogPage,icon:'cash',customIcon:null },
+  loadPages() {
+    this.pages = [
+      { title: 'Profile', component: ProfilePage, icon: 'contact', customIcon: null },
+      { title: 'Cash Wallet', component: WalletPage, icon: 'card', customIcon: null },
+      { title: 'Coins', component: CoinsPage, icon: 'cash', customIcon: null },
+      { title: 'Withdrawal', component: WithdrawalLogPage, icon: 'cash', customIcon: null },
     ];
   }
-    getFirstLetter(value){
-    if(value){
-  return (value.charAt(0)).toUpperCase();
+  getFirstLetter(value) {
+    if (value) {
+      return (value.charAt(0)).toUpperCase();
     }
   }
-  openPage(page:any){
- this.nav.push(page.component);
+  openPage(page: any) {
+    this.nav.push(page.component);
   }
   loginAndLogout() {
     if (this.authService.authenticated) {
-      this.user=null;
+      this.user = null;
       localStorage.removeItem('user');
       this.authService.logout();
       this.nav.push(LoginPage);
@@ -114,8 +90,8 @@ export class MyApp {
       this.nav.push(LoginPage);
     }
   }
-    changePicture(): void {
-     
+  changePicture(): void {
+
     let actionSheet = this.actionSheetCtrl.create({
       enableBackdropDismiss: true,
       buttons: [
@@ -123,30 +99,20 @@ export class MyApp {
           text: 'Take a picture',
           icon: 'camera',
           handler: () => {
-            let file=  this.pictureUtils.uploadHandler(false);
-            this.quizService.saveProfilePicture(file)
-            .subscribe(data=>{
-              this.commonService.messagePopup(data["message"]);
-            },error=>{
-              this.commonService.messagePopup("An error occurred while processing your request");
-            })
+            this.pictureUtils.captureImage();
           }
         }, {
           text: 'From gallery',
           icon: 'images',
           handler: () => {
-            let file=  this.pictureUtils.uploadHandler(true);
-            this.quizService.saveProfilePicture(file)
-            .subscribe(data=>{
-              this.commonService.messagePopup(data["message"]);
-            },error=>{
-              this.commonService.messagePopup("An error occurred while processing your request");
-            })
+            this.pictureUtils.galleryImage();
+
           }
         }
       ]
     });
     actionSheet.present();
   }
+
 }
 
